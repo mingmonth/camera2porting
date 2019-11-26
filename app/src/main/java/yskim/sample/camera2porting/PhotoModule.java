@@ -487,8 +487,8 @@ public class PhotoModule implements CameraModule,
 
         mUI.onCameraOpened(mPreferenceGroup, mPreferences, mParameters, this);
         if (mIsImageCaptureIntent) {
-            mUI.overrideSettings(CameraSettings.KEY_CAMERA_HDR_PLUS,
-                    mActivity.getString(R.string.setting_off_value));
+//            mUI.overrideSettings(CameraSettings.KEY_CAMERA_HDR_PLUS,
+//                    mActivity.getString(R.string.setting_off_value));
         }
         updateSceneMode();
         showTapToFocusToastIfNeeded();
@@ -837,10 +837,10 @@ public class PhotoModule implements CameraModule,
             case PhotoController.PREVIEW_STOPPED:
             case PhotoController.SNAPSHOT_IN_PROGRESS:
             case PhotoController.SWITCHING_CAMERA:
-                mUI.enableGestures(false);
+                //mUI.enableGestures(false);
                 break;
             case PhotoController.IDLE:
-                mUI.enableGestures(true);
+                //mUI.enableGestures(true);
                 break;
         }
     }
@@ -934,10 +934,10 @@ public class PhotoModule implements CameraModule,
 
     private void overrideCameraSettings(final String flashMode,
                                         final String whiteBalance, final String focusMode) {
-        mUI.overrideSettings(
-                CameraSettings.KEY_FLASH_MODE, flashMode,
-                CameraSettings.KEY_WHITE_BALANCE, whiteBalance,
-                CameraSettings.KEY_FOCUS_MODE, focusMode);
+//        mUI.overrideSettings(
+//                CameraSettings.KEY_FLASH_MODE, flashMode,
+//                CameraSettings.KEY_WHITE_BALANCE, whiteBalance,
+//                CameraSettings.KEY_FOCUS_MODE, focusMode);
     }
 
     private void loadCameraPreferences() {
@@ -1902,7 +1902,7 @@ public class PhotoModule implements CameraModule,
 
     @Override
     public void onShowSwitcherPopup() {
-        mUI.onShowSwitcherPopup();
+        //mUI.onShowSwitcherPopup();
     }
 
     @Override

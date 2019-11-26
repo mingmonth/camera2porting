@@ -94,38 +94,29 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
     private final AnimationManager mAnimationManager;
     private MainActivity mActivity;
     private PhotoController mController;
-    //private PreviewGestures mGestures;
 
     private View mRootView;
     private SurfaceTexture mSurfaceTexture;
 
     private PopupWindow mPopup;
     private ShutterButton mShutterButton;
-    //private CountDownView mCountDownView;
 
-    //private FaceView mFaceView;
     private RenderOverlay mRenderOverlay;
     private View mReviewCancelButton;
     private View mReviewDoneButton;
     private View mReviewRetakeButton;
     private ImageView mReviewImage;
     private DecodeImageForReview mDecodeTaskForReview = null;
-
-    //private View mMenuButton;
-    //private PhotoMenu mMenu;
-    //private ModuleSwitcher mSwitcher;
     private CameraControls mCameraControls;
     private AlertDialog mLocationDialog;
 
     // Small indicators which show the camera settings in the viewfinder.
     private OnScreenIndicators mOnScreenIndicators;
 
-    //private PieRenderer mPieRenderer;
-    //private ZoomRenderer mZoomRenderer;
     private Toast mNotSelectableToast;
 
-    private int mZoomMax;
-    private List<Integer> mZoomRatios;
+//    private int mZoomMax;
+//    private List<Integer> mZoomRatios;
 
     private int mPreviewWidth = 0;
     private int mPreviewHeight = 0;
@@ -228,17 +219,6 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
         initIndicators();
 
         mShutterButton = (ShutterButton) mRootView.findViewById(R.id.shutter_button);
-        //mSwitcher = (ModuleSwitcher) mRootView.findViewById(R.id.camera_switcher);
-        //mSwitcher.setCurrentIndex(ModuleSwitcher.PHOTO_MODULE_INDEX);
-        //mSwitcher.setSwitchListener(mActivity);
-        //mMenuButton = mRootView.findViewById(R.id.menu);
-//        ViewStub faceViewStub = (ViewStub) mRootView
-//                .findViewById(R.id.face_view_stub);
-//        if (faceViewStub != null) {
-//            faceViewStub.inflate();
-//            mFaceView = (FaceView) mRootView.findViewById(R.id.face_view);
-//            setSurfaceTextureSizeChangedListener(mFaceView);
-//        }
         mCameraControls = (CameraControls) mRootView.findViewById(R.id.camera_controls);
         mAnimationManager = new AnimationManager();
     }
@@ -347,57 +327,11 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
     }
 
     private void initIndicators() {
-        mOnScreenIndicators = new OnScreenIndicators(mActivity,
-                mRootView.findViewById(R.id.on_screen_indicators));
+        mOnScreenIndicators = new OnScreenIndicators(mActivity, mRootView.findViewById(R.id.on_screen_indicators));
     }
 
     public void onCameraOpened(PreferenceGroup prefGroup, ComboPreferences prefs,
                                Camera.Parameters params, OnPreferenceChangedListener listener) {
-//        if (mPieRenderer == null) {
-//            mPieRenderer = new PieRenderer(mActivity);
-//            mPieRenderer.setPieListener(this);
-//            mRenderOverlay.addRenderer(mPieRenderer);
-//        }
-//
-//        if (mMenu == null) {
-//            mMenu = new PhotoMenu(mActivity, this, mPieRenderer);
-//            mMenu.setListener(listener);
-//        }
-//        mMenu.initialize(prefGroup);
-//
-//        if (mZoomRenderer == null) {
-//            mZoomRenderer = new ZoomRenderer(mActivity);
-//            mRenderOverlay.addRenderer(mZoomRenderer);
-//        }
-//
-//        if (mGestures == null) {
-//            // this will handle gesture disambiguation and dispatching
-//            mGestures = new PreviewGestures(mActivity, this, mZoomRenderer, mPieRenderer);
-//            mRenderOverlay.setGestures(mGestures);
-//        }
-//        mGestures.setZoomEnabled(params.isZoomSupported());
-//        mGestures.setRenderOverlay(mRenderOverlay);
-//        mRenderOverlay.requestLayout();
-//
-//        initializeZoom(params);
-//        updateOnScreenIndicators(params, prefGroup, prefs);
-    }
-
-    public void animateCapture(final byte[] jpegData, int orientation, boolean mirror) {
-        // Decode jpeg byte array and then animate the jpeg
-        DecodeTask task = new DecodeTask(jpegData, orientation, mirror);
-        task.execute();
-    }
-
-    private void openMenu() {
-//        if (mPieRenderer != null) {
-//            // If autofocus is not finished, cancel autofocus so that the
-//            // subsequent touch can be handled by PreviewGestures
-//            if (mController.getCameraState() == PhotoController.FOCUSING) {
-//                mController.cancelAutoFocus();
-//            }
-//            mPieRenderer.showInCenter();
-//        }
     }
 
     public void initializeControlByIntent() {
@@ -405,16 +339,8 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
         mPreviewThumb.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mActivity.gotoGallery();
             }
         });
-        //mMenuButton = mRootView.findViewById(R.id.menu);
-//        mMenuButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openMenu();
-//            }
-//        });
         if (mController.isImageCaptureIntent()) {
             hideSwitcher();
             ViewGroup cameraControls = (ViewGroup) mRootView.findViewById(R.id.camera_controls);
@@ -518,28 +444,6 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
     }
 
     public void initializeZoom(Camera.Parameters params) {
-//        if ((params == null) || !params.isZoomSupported()
-//                || (mZoomRenderer == null)) return;
-//        mZoomMax = params.getMaxZoom();
-//        mZoomRatios = params.getZoomRatios();
-//        // Currently we use immediate zoom for fast zooming to get better UX and
-//        // there is no plan to take advantage of the smooth zoom.
-//        if (mZoomRenderer != null) {
-//            mZoomRenderer.setZoomMax(mZoomMax);
-//            mZoomRenderer.setZoom(params.getZoom());
-//            mZoomRenderer.setZoomValue(mZoomRatios.get(params.getZoom()));
-//            mZoomRenderer.setOnZoomChangeListener(new ZoomChangeListener());
-//        }
-    }
-
-//    @Override
-//    public void showGpsOnScreenIndicator(boolean hasSignal) { }
-//
-//    @Override
-//    public void hideGpsOnScreenIndicator() { }
-
-    public void overrideSettings(final String ... keyvalues) {
-        //mMenu.overrideSettings(keyvalues);
     }
 
     public void updateOnScreenIndicators(Camera.Parameters params,
@@ -560,30 +464,11 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
         mOnScreenIndicators.updateLocationIndicator(location);
     }
 
-    public void setCameraState(int state) {
-    }
-
     public void animateFlash() {
         mAnimationManager.startFlashAnimation(mFlashOverlay);
     }
 
-    public void enableGestures(boolean enable) {
-//        if (mGestures != null) {
-//            mGestures.setEnabled(enable);
-//        }
-    }
-
-    // forward from preview gestures to controller
-//    @Override
-//    public void onSingleTapUp(View view, int x, int y) {
-//        mController.onSingleTapUp(view, x, y);
-//    }
-
     public boolean onBackPressed() {
-//        if (mPieRenderer != null && mPieRenderer.showsItems()) {
-//            mPieRenderer.hide();
-//            return true;
-//        }
         // In image capture mode, back button should:
         // 1) if there is any popup, dismiss them, 2) otherwise, get out of
         // image capture
@@ -604,68 +489,16 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
         } else {
             hideUI();
         }
-//        if (mFaceView != null) {
-//            mFaceView.setBlockDraw(!previewFocused);
-//        }
-//        if (mGestures != null) {
-//            mGestures.setEnabled(previewFocused);
-//        }
         if (mRenderOverlay != null) {
             // this can not happen in capture mode
             mRenderOverlay.setVisibility(previewFocused ? View.VISIBLE : View.GONE);
         }
-//        if (mPieRenderer != null) {
-//            mPieRenderer.setBlockFocus(!previewFocused);
-//        }
-//        setShowMenu(previewFocused);
-//        if (!previewFocused && mCountDownView != null) mCountDownView.cancelCountDown();
-    }
-
-    public void showPopup(AbstractSettingPopup popup) {
-        hideUI();
-
-        if (mPopup == null) {
-            mPopup = new PopupWindow(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            mPopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            mPopup.setOutsideTouchable(true);
-            mPopup.setFocusable(true);
-            mPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    //mPopup = null;
-                    //mMenu.popupDismissed();
-                    //showUI();
-
-                    // Switch back into fullscreen/lights-out mode after popup
-                    // is dimissed.
-                    mActivity.setSystemBarsVisibility(false);
-                }
-            });
-        }
-        popup.setVisibility(View.VISIBLE);
-        mPopup.setContentView(popup);
-        mPopup.showAtLocation(mRootView, Gravity.CENTER, 0, 0);
     }
 
     public void dismissPopup() {
         if (mPopup != null && mPopup.isShowing()) {
             mPopup.dismiss();
         }
-    }
-
-    public void onShowSwitcherPopup() {
-//        if (mPieRenderer != null && mPieRenderer.showsItems()) {
-//            mPieRenderer.hide();
-//        }
-    }
-
-    private void setShowMenu(boolean show) {
-        if (mOnScreenIndicators != null) {
-            mOnScreenIndicators.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-//        if (mMenuButton != null) {
-//            mMenuButton.setVisibility(show ? View.VISIBLE : View.GONE);
-//        }
     }
 
     public boolean collapseCameraControls() {
@@ -678,7 +511,6 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
             dismissPopup();
             ret = true;
         }
-        onShowSwitcherPopup();
         return ret;
     }
 
