@@ -11,9 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import yskim.sample.camera2porting.ui.CameraControls;
 import yskim.sample.camera2porting.util.ApiHelper;
 import yskim.sample.camera2porting.util.CameraUtil;
+import yskim.sample.camera2porting.util.Debug;
 
 @SuppressLint("NewApi")
 public class CameraRootView extends FrameLayout {
@@ -120,6 +120,7 @@ public class CameraRootView extends FrameLayout {
         mRightMargin = 0;
         mBottomMargin = 0;
         mTopMargin = 0;
+
         switch (rotation) {
             case 0:
                 mBottomMargin += mOffset;
@@ -156,22 +157,24 @@ public class CameraRootView extends FrameLayout {
         l = 0;
         t = 0;
         int orientation = getResources().getConfiguration().orientation;
+        Debug.logd(new Exception(), "getChildCount() : " + getChildCount());
         // Lay out children
         for (int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
-            if (v instanceof CameraControls) {
-                // Lay out camera controls to center on the short side of the screen
-                // so that they stay in place during rotation
-                int width = v.getMeasuredWidth();
-                int height = v.getMeasuredHeight();
-                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    int left = (l + r - width) / 2;
-                    v.layout(left, t + mTopMargin, left + width, b - mBottomMargin);
-                } else {
-                    int top = (t + b - height) / 2;
-                    v.layout(l + mLeftMargin, top, r - mRightMargin, top + height);
-                }
-            } else {
+//            if (v instanceof CameraControls) {
+//                // Lay out camera controls to center on the short side of the screen
+//                // so that they stay in place during rotation
+//                int width = v.getMeasuredWidth();
+//                int height = v.getMeasuredHeight();
+//                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//                    int left = (l + r - width) / 2;
+//                    v.layout(left, t + mTopMargin, left + width, b - mBottomMargin);
+//                } else {
+//                    int top = (t + b - height) / 2;
+//                    v.layout(l + mLeftMargin, top, r - mRightMargin, top + height);
+//                }
+//            } else
+            {
                 v.layout(l + mLeftMargin, t + mTopMargin, r - mRightMargin, b - mBottomMargin);
             }
         }

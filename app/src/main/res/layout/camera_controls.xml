@@ -47,7 +47,7 @@
             android:layout_marginRight="2dip"
             android:contentDescription="@string/accessibility_mode_picker" /> -->
 
-        <yskim.sample.camera2porting.ShutterButton
+        <!-- <yskim.sample.camera2porting.ShutterButton
             android:id="@+id/shutter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:contentDescription="@string/accessibility_shutter_button"
             android:focusable="true"
             android:scaleType="center"
-            android:src="@drawable/btn_new_shutter" />
+            android:src="@drawable/btn_new_shutter" /> -->
 
         <ImageView
             android:id="@+id/preview_thumb"

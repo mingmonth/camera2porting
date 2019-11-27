@@ -116,17 +116,6 @@ public class SimpleViewData implements LocalData {
     }
 
     @Override
-    public void isPhotoSphere(Context context, PanoramaSupportCallback callback) {
-        // Not a photo sphere panorama.
-        callback.panoramaInfoAvailable(false, false);
-    }
-
-//    @Override
-//    public void viewPhotoSphere(PhotoSphereHelper.PanoramaViewHelper helper) {
-//        // do nothing.
-//    }
-
-    @Override
     public void onFullScreen(boolean fullScreen) {
         // do nothing.
     }
@@ -135,11 +124,6 @@ public class SimpleViewData implements LocalData {
     public boolean canSwipeInFullScreen() {
         return true;
     }
-
-//    @Override
-//    public MediaDetails getMediaDetails(Context context) {
-//        return null;
-//    }
 
     @Override
     public double[] getLatLong() {

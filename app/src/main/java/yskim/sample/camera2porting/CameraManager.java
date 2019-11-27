@@ -71,15 +71,15 @@ public interface CameraManager {
      * An interface which wraps
      * {@link android.hardware.Camera.FaceDetectionListener}.
      */
-    public interface CameraFaceDetectionCallback {
-        /**
-         * Callback for face detection.
-         *
-         * @param faces   Recognized face in the preview.
-         * @param camera  The camera which the preview image comes from.
-         */
-        public void onFaceDetection(Camera.Face[] faces, CameraProxy camera);
-    }
+//    public interface CameraFaceDetectionCallback {
+//        /**
+//         * Callback for face detection.
+//         *
+//         * @param faces   Recognized face in the preview.
+//         * @param camera  The camera which the preview image comes from.
+//         */
+//        public void onFaceDetection(Camera.Face[] faces, CameraProxy camera);
+//    }
 
     /**
      * An interface to be called for any exception caught when opening the
@@ -285,7 +285,7 @@ public interface CameraManager {
          * @param handler  The handler in which the callback will be invoked.
          * @param callback The callback for face detection results.
          */
-        public void setFaceDetectionCallback(Handler handler, CameraFaceDetectionCallback callback);
+        //public void setFaceDetectionCallback(Handler handler, CameraFaceDetectionCallback callback);
 
         /**
          * Starts the face detection.

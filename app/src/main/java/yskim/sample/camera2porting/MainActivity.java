@@ -52,8 +52,6 @@ public class MainActivity extends Activity {
     private FilmStripView mFilmStripView;
     private boolean mSecureCamera;
     private OnActionBarVisibilityListener mOnActionBarVisibilityListener = null;
-    private Handler mMainHandler;
-    private ProgressBar mBottomProgress;
     private FrameLayout mAboveFilmstripControlLayout;
     private static boolean sFirstStartAfterScreenOn = true;
 
@@ -76,19 +74,6 @@ public class MainActivity extends Activity {
                     CameraUtil.showErrorAndFinish(MainActivity.this, R.string.cannot_connect_camera);
                 }
             };
-
-    private class MainHandler extends Handler {
-        public MainHandler(Looper looper) {
-            super(looper);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == HIDE_ACTION_BAR) {
-                removeMessages(HIDE_ACTION_BAR);
-            }
-        }
-    }
 
     public interface OnActionBarVisibilityListener {
         public void onActionBarVisibilityChanged(boolean isVisible);
@@ -153,10 +138,10 @@ public class MainActivity extends Activity {
         ((ViewGroup) mCameraModuleRootView).removeAllViews();
     }
 
-    private void setModuleFromIndex(int moduleIndex) {
-        mCurrentModuleIndex = moduleIndex;
-        mCurrentModule = new PhotoModule();
-    }
+//    private void setModuleFromIndex(int moduleIndex) {
+//        mCurrentModuleIndex = moduleIndex;
+//        mCurrentModule = new PhotoModule();
+//    }
 
     public CameraOpenErrorCallback getCameraOpenErrorCallback() {
         return mCameraOpenErrorCallback;
@@ -176,7 +161,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.camera_filmstrip);
-        mMainHandler = new MainHandler(getMainLooper());
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -196,12 +180,14 @@ public class MainActivity extends Activity {
         View rootLayout = inflater.inflate(R.layout.camera, null, false);
         mCameraModuleRootView = rootLayout.findViewById(R.id.camera_app_root);
         mCameraPreviewData = new CameraPreviewData(rootLayout, FilmStripView.ImageData.SIZE_FULL, FilmStripView.ImageData.SIZE_FULL);
+        //mCameraPreviewData = new CameraPreviewData(rootLayout, 800, 480);   // landscape
+        //mCameraPreviewData = new CameraPreviewData(rootLayout, 480, 800);   // portrait
         mWrappedDataAdapter = new FixedFirstDataAdapter(new CameraDataAdapter(new ColorDrawable(getResources().getColor(R.color.photo_placeholder))), mCameraPreviewData);
         mFilmStripView = (FilmStripView) findViewById(R.id.filmstrip_view);
-        mFilmStripView.setViewGap(getResources().getDimensionPixelSize(R.dimen.camera_film_strip_gap));
+        //mFilmStripView.setViewGap(getResources().getDimensionPixelSize(R.dimen.camera_film_strip_gap));
 
-        int moduleIndex = 0;    //PHOTO_MODULE_INDEX
-        setModuleFromIndex(moduleIndex);
+        mCurrentModuleIndex = 0;    //PHOTO_MODULE_INDEX
+        mCurrentModule = new PhotoModule();
         mCurrentModule.init(this, mCameraModuleRootView);
 
         if (!mSecureCamera) {
