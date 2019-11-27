@@ -9,8 +9,7 @@ import android.widget.RelativeLayout;
 import yskim.sample.camera2porting.MainActivity;
 import yskim.sample.camera2porting.R;
 
-public class FilmstripBottomControls extends RelativeLayout
-        implements MainActivity.OnActionBarVisibilityListener {
+public class FilmstripBottomControls extends RelativeLayout {
 
     /**
      * Classes implementing this interface can listen for events on the bottom
@@ -20,17 +19,17 @@ public class FilmstripBottomControls extends RelativeLayout
         /**
          * Called when the user pressed the "view photosphere" button.
          */
-        public void onViewPhotoSphere();
+//        public void onViewPhotoSphere();
 
         /**
          * Called when the user pressed the "edit" button.
          */
-        public void onEdit();
+//        public void onEdit();
 
         /**
          * Called when the user pressed the "tiny planet" button.
          */
-        public void onTinyPlanet();
+//        public void onTinyPlanet();
     }
 
     private BottomControlsListener mListener;
@@ -51,7 +50,7 @@ public class FilmstripBottomControls extends RelativeLayout
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onEdit();
+//                    mListener.onEdit();
                 }
             }
         });
@@ -62,7 +61,7 @@ public class FilmstripBottomControls extends RelativeLayout
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onViewPhotoSphere();
+//                    mListener.onViewPhotoSphere();
                 }
             }
         });
@@ -73,7 +72,7 @@ public class FilmstripBottomControls extends RelativeLayout
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onTinyPlanet();
+//                    mListener.onTinyPlanet();
                 }
             }
         });
@@ -120,10 +119,10 @@ public class FilmstripBottomControls extends RelativeLayout
         });
     }
 
-    @Override
-    public void onActionBarVisibilityChanged(boolean isVisible) {
-        // TODO: Fade in and out
-        setVisibility(isVisible ? VISIBLE : INVISIBLE);
-    }
+//    @Override
+//    public void onActionBarVisibilityChanged(boolean isVisible) {
+//        // TODO: Fade in and out
+//        setVisibility(isVisible ? VISIBLE : INVISIBLE);
+//    }
 }
 

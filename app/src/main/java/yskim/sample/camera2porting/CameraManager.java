@@ -280,24 +280,6 @@ public interface CameraManager {
         public void setZoomChangeListener(OnZoomChangeListener listener);
 
         /**
-         * Sets the face detection listener.
-         *
-         * @param handler  The handler in which the callback will be invoked.
-         * @param callback The callback for face detection results.
-         */
-        //public void setFaceDetectionCallback(Handler handler, CameraFaceDetectionCallback callback);
-
-        /**
-         * Starts the face detection.
-         */
-        public void startFaceDetection();
-
-        /**
-         * Stops the face detection.
-         */
-        public void stopFaceDetection();
-
-        /**
          * Registers an error callback.
          *
          * @param cb The error callback.

@@ -9,29 +9,10 @@ import android.widget.ImageView;
 public class ShutterButton extends ImageView {
 
     private boolean mTouchEnabled = true;
-
-    /**
-     * A callback to be invoked when a ShutterButton's pressed state changes.
-     */
-    public interface OnShutterButtonListener {
-        /**
-         * Called when a ShutterButton has been pressed.
-         *
-         * @param pressed The ShutterButton that was pressed.
-         */
-        void onShutterButtonFocus(boolean pressed);
-        void onShutterButtonClick();
-    }
-
-    private OnShutterButtonListener mListener;
     private boolean mOldPressed;
 
     public ShutterButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public void setOnShutterButtonListener(OnShutterButtonListener listener) {
-        mListener = listener;
     }
 
     @Override
@@ -93,17 +74,11 @@ public class ShutterButton extends ImageView {
     }
 
     private void callShutterButtonFocus(boolean pressed) {
-        if (mListener != null) {
-            mListener.onShutterButtonFocus(pressed);
-        }
     }
 
     @Override
     public boolean performClick() {
         boolean result = super.performClick();
-        if (mListener != null && getVisibility() == View.VISIBLE) {
-            mListener.onShutterButtonClick();
-        }
         return result;
     }
 }

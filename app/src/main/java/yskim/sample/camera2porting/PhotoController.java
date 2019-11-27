@@ -1,11 +1,8 @@
 package yskim.sample.camera2porting;
 
 import android.graphics.Rect;
-import android.view.View;
 
-import yskim.sample.camera2porting.ShutterButton.OnShutterButtonListener;
-
-public interface PhotoController extends OnShutterButtonListener {
+public interface PhotoController {
 
     public static final int PREVIEW_STOPPED = 0;
     public static final int IDLE = 1;  // preview is active
@@ -16,33 +13,33 @@ public interface PhotoController extends OnShutterButtonListener {
     public static final int SWITCHING_CAMERA = 4;
 
     // returns the actual set zoom value
-    public int onZoomChanged(int requestedZoom);
+    //public int onZoomChanged(int requestedZoom);
 
-    public boolean isImageCaptureIntent();
+    //public boolean isImageCaptureIntent();
 
     public boolean isCameraIdle();
 
-    public void onCaptureDone();
+//    public void onCaptureDone();
 
     public void onCaptureCancelled();
 
-    public void onCaptureRetake();
+//    public void onCaptureRetake();
 
-    public void cancelAutoFocus();
+//    public void cancelAutoFocus();
 
     public void stopPreview();
 
-    public int getCameraState();
+//    public int getCameraState();
 
-    public void onSingleTapUp(View view, int x, int y);
+//    public void onSingleTapUp(View view, int x, int y);
 
-    public void onCountDownFinished();
+//    public void onCountDownFinished();
 
-    public void onPreviewRectChanged(Rect previewRect);
+//    public void onPreviewRectChanged(Rect previewRect);
 
-    public void updateCameraOrientation();
+//    public void updateCameraOrientation();
 
-    public void enableRecordingLocation(boolean enable);
+//    public void enableRecordingLocation(boolean enable);
 
     /**
      * This is the callback when the UI or buffer holder for camera preview,

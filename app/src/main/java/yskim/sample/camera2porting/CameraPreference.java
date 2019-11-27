@@ -13,10 +13,10 @@ public abstract class CameraPreference {
     private final Context mContext;
 
     static public interface OnPreferenceChangedListener {
-        public void onSharedPreferenceChanged();
-        public void onRestorePreferencesClicked();
-        public void onOverriddenPreferencesClicked();
-        public void onCameraPickerClicked(int cameraId);
+        //public void onSharedPreferenceChanged();
+        //public void onRestorePreferencesClicked();
+        //public void onOverriddenPreferencesClicked();
+        //public void onCameraPickerClicked(int cameraId);
     }
 
     public CameraPreference(Context context, AttributeSet attrs) {

@@ -54,14 +54,13 @@ public class CameraSettings {
     private static final String TAG = "CameraSettings";
 
     private final Context mContext;
-    private final Parameters mParameters;
+    //private final Parameters mParameters;
     private final CameraInfo[] mCameraInfo;
     private final int mCameraId;
 
-    public CameraSettings(Activity activity, Parameters parameters,
-                          int cameraId, CameraInfo[] cameraInfo) {
+    public CameraSettings(Activity activity, int cameraId, CameraInfo[] cameraInfo) {
         mContext = activity;
-        mParameters = parameters;
+        //mParameters = parameters;
         mCameraId = cameraId;
         mCameraInfo = cameraInfo;
     }
@@ -70,7 +69,7 @@ public class CameraSettings {
         PreferenceInflater inflater = new PreferenceInflater(mContext);
         PreferenceGroup group =
                 (PreferenceGroup) inflater.inflate(preferenceRes);
-        if (mParameters != null) initPreference(group);
+        //if (mParameters != null) initPreference(group);
         return group;
     }
 
@@ -159,36 +158,36 @@ public class CameraSettings {
             filterUnsupportedOptions(group, videoQuality, getSupportedVideoQuality(mCameraId));
         }
 
-        if (pictureSize != null) {
-            filterUnsupportedOptions(group, pictureSize, sizeListToStringList(
-                    mParameters.getSupportedPictureSizes()));
-            filterSimilarPictureSize(group, pictureSize);
-        }
-        if (whiteBalance != null) {
-            filterUnsupportedOptions(group,
-                    whiteBalance, mParameters.getSupportedWhiteBalance());
-        }
-        if (sceneMode != null) {
-            filterUnsupportedOptions(group,
-                    sceneMode, mParameters.getSupportedSceneModes());
-        }
-        if (flashMode != null) {
-            filterUnsupportedOptions(group,
-                    flashMode, mParameters.getSupportedFlashModes());
-        }
-        if (focusMode != null) {
-            if (!CameraUtil.isFocusAreaSupported(mParameters)) {
-                filterUnsupportedOptions(group,
-                        focusMode, mParameters.getSupportedFocusModes());
-            } else {
-                // Remove the focus mode if we can use tap-to-focus.
-                removePreference(group, focusMode.getKey());
-            }
-        }
-        if (videoFlashMode != null) {
-            filterUnsupportedOptions(group,
-                    videoFlashMode, mParameters.getSupportedFlashModes());
-        }
+//        if (pictureSize != null) {
+//            filterUnsupportedOptions(group, pictureSize, sizeListToStringList(
+//                    mParameters.getSupportedPictureSizes()));
+//            filterSimilarPictureSize(group, pictureSize);
+//        }
+//        if (whiteBalance != null) {
+//            filterUnsupportedOptions(group,
+//                    whiteBalance, mParameters.getSupportedWhiteBalance());
+//        }
+//        if (sceneMode != null) {
+//            filterUnsupportedOptions(group,
+//                    sceneMode, mParameters.getSupportedSceneModes());
+//        }
+//        if (flashMode != null) {
+//            filterUnsupportedOptions(group,
+//                    flashMode, mParameters.getSupportedFlashModes());
+//        }
+//        if (focusMode != null) {
+//            if (!CameraUtil.isFocusAreaSupported(mParameters)) {
+//                filterUnsupportedOptions(group,
+//                        focusMode, mParameters.getSupportedFocusModes());
+//            } else {
+//                // Remove the focus mode if we can use tap-to-focus.
+//                removePreference(group, focusMode.getKey());
+//            }
+//        }
+//        if (videoFlashMode != null) {
+//            filterUnsupportedOptions(group,
+//                    videoFlashMode, mParameters.getSupportedFlashModes());
+//        }
         if (exposure != null) buildExposureCompensation(group, exposure);
         if (cameraIdPref != null) buildCameraId(group, cameraIdPref);
 
@@ -198,10 +197,10 @@ public class CameraSettings {
         if (videoEffect != null) {
             filterUnsupportedOptions(group, videoEffect, null);
         }
-        if (cameraHdr != null && (!ApiHelper.HAS_CAMERA_HDR
-                || !CameraUtil.isCameraHdrSupported(mParameters))) {
-            removePreference(group, cameraHdr.getKey());
-        }
+//        if (cameraHdr != null && (!ApiHelper.HAS_CAMERA_HDR
+//                || !CameraUtil.isCameraHdrSupported(mParameters))) {
+//            removePreference(group, cameraHdr.getKey());
+//        }
 
         int frontCameraId = CameraHolder.instance().getFrontCameraId();
         boolean isFrontCamera = (frontCameraId == mCameraId);
@@ -212,37 +211,37 @@ public class CameraSettings {
 
     private void buildExposureCompensation(
             PreferenceGroup group, IconListPreference exposure) {
-        int max = mParameters.getMaxExposureCompensation();
-        int min = mParameters.getMinExposureCompensation();
-        if (max == 0 && min == 0) {
-            removePreference(group, exposure.getKey());
-            return;
-        }
-        float step = mParameters.getExposureCompensationStep();
+//        int max = mParameters.getMaxExposureCompensation();
+//        int min = mParameters.getMinExposureCompensation();
+//        if (max == 0 && min == 0) {
+//            removePreference(group, exposure.getKey());
+//            return;
+//        }
+//        float step = mParameters.getExposureCompensationStep();
 
         // show only integer values for exposure compensation
-        int maxValue = Math.min(3, (int) Math.floor(max * step));
-        int minValue = Math.max(-3, (int) Math.ceil(min * step));
-        String explabel = mContext.getResources().getString(R.string.pref_exposure_label);
-        CharSequence entries[] = new CharSequence[maxValue - minValue + 1];
-        CharSequence entryValues[] = new CharSequence[maxValue - minValue + 1];
-        CharSequence labels[] = new CharSequence[maxValue - minValue + 1];
-        int[] icons = new int[maxValue - minValue + 1];
-        TypedArray iconIds = mContext.getResources().obtainTypedArray(
-                R.array.pref_camera_exposure_icons);
-        for (int i = minValue; i <= maxValue; ++i) {
-            entryValues[i - minValue] = Integer.toString(Math.round(i / step));
-            StringBuilder builder = new StringBuilder();
-            if (i > 0) builder.append('+');
-            entries[i - minValue] = builder.append(i).toString();
-            labels[i - minValue] = explabel + " " + builder.toString();
-            icons[i - minValue] = iconIds.getResourceId(3 + i, 0);
-        }
-        exposure.setUseSingleIcon(true);
-        exposure.setEntries(entries);
-        exposure.setLabels(labels);
-        exposure.setEntryValues(entryValues);
-        exposure.setLargeIconIds(icons);
+//        int maxValue = Math.min(3, (int) Math.floor(max * step));
+//        int minValue = Math.max(-3, (int) Math.ceil(min * step));
+//        String explabel = mContext.getResources().getString(R.string.pref_exposure_label);
+//        CharSequence entries[] = new CharSequence[maxValue - minValue + 1];
+//        CharSequence entryValues[] = new CharSequence[maxValue - minValue + 1];
+//        CharSequence labels[] = new CharSequence[maxValue - minValue + 1];
+//        int[] icons = new int[maxValue - minValue + 1];
+//        TypedArray iconIds = mContext.getResources().obtainTypedArray(
+//                R.array.pref_camera_exposure_icons);
+//        for (int i = minValue; i <= maxValue; ++i) {
+//            entryValues[i - minValue] = Integer.toString(Math.round(i / step));
+//            StringBuilder builder = new StringBuilder();
+//            if (i > 0) builder.append('+');
+//            entries[i - minValue] = builder.append(i).toString();
+//            labels[i - minValue] = explabel + " " + builder.toString();
+//            icons[i - minValue] = iconIds.getResourceId(3 + i, 0);
+//        }
+//        exposure.setUseSingleIcon(true);
+//        exposure.setEntries(entries);
+//        exposure.setLabels(labels);
+//        exposure.setEntryValues(entryValues);
+//        exposure.setLargeIconIds(icons);
     }
 
     private void buildCameraId(

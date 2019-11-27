@@ -478,23 +478,6 @@ public class AndroidCameraManagerImpl implements CameraManager {
             mCameraHandler.obtainMessage(SET_ZOOM_CHANGE_LISTENER, listener).sendToTarget();
         }
 
-//        public void setFaceDetectionCallback(
-//                Handler handler, CameraFaceDetectionCallback cb) {
-//            mCameraHandler.obtainMessage(
-//                    SET_FACE_DETECTION_LISTENER,
-//                    FaceDetectionCallbackForward.getNewInstance(handler, this, cb)).sendToTarget();
-//        }
-
-        @Override
-        public void startFaceDetection() {
-            mCameraHandler.sendEmptyMessage(START_FACE_DETECTION);
-        }
-
-        @Override
-        public void stopFaceDetection() {
-            mCameraHandler.sendEmptyMessage(STOP_FACE_DETECTION);
-        }
-
         @Override
         public void setErrorCallback(ErrorCallback cb) {
             mCameraHandler.obtainMessage(SET_ERROR_CALLBACK, cb).sendToTarget();

@@ -18,7 +18,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/camera_layout_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/album_background">
 
     <yskim.sample.camera2porting.ui.FilmStripView
         android:id="@+id/filmstrip_view"

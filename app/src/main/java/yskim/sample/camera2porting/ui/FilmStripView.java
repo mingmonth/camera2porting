@@ -22,13 +22,11 @@ import android.widget.Scroller;
 
 import yskim.sample.camera2porting.MainActivity;
 import yskim.sample.camera2porting.R;
-import yskim.sample.camera2porting.data.LocalData;
-import yskim.sample.camera2porting.ui.FilmstripBottomControls.BottomControlsListener;
 import yskim.sample.camera2porting.util.Debug;
 
 import java.util.Arrays;
 
-public class FilmStripView extends ViewGroup implements BottomControlsListener {
+public class FilmStripView extends ViewGroup {
     private static final String TAG = "CAM_FilmStripView";
 
     private static final int BUFFER_SIZE = 5;
@@ -961,31 +959,31 @@ public class FilmStripView extends ViewGroup implements BottomControlsListener {
      * If the current photo is a photo sphere, this will launch the Photo Sphere
      * panorama viewer.
      */
-    @Override
-    public void onViewPhotoSphere() {
-        ViewItem curr = mViewItem[mCurrentItem];
-        if (curr != null) {
-            //mDataAdapter.getImageData(curr.getId()).viewPhotoSphere(mPanoramaViewHelper);
-        }
-    }
+//    @Override
+//    public void onViewPhotoSphere() {
+//        ViewItem curr = mViewItem[mCurrentItem];
+//        if (curr != null) {
+//            //mDataAdapter.getImageData(curr.getId()).viewPhotoSphere(mPanoramaViewHelper);
+//        }
+//    }
 
-    @Override
-    public void onEdit() {
-        ImageData data = mDataAdapter.getImageData(getCurrentId());
-        if (data == null || !(data instanceof LocalData)) {
-            return;
-        }
-        mActivity.launchEditor((LocalData) data);
-    }
-
-    @Override
-    public void onTinyPlanet() {
-        ImageData data = mDataAdapter.getImageData(getCurrentId());
-        if (data == null || !(data instanceof LocalData)) {
-            return;
-        }
-        //mActivity.launchTinyPlanetEditor((LocalData) data);
-    }
+//    @Override
+//    public void onEdit() {
+//        ImageData data = mDataAdapter.getImageData(getCurrentId());
+//        if (data == null || !(data instanceof LocalData)) {
+//            return;
+//        }
+//        mActivity.launchEditor((LocalData) data);
+//    }
+//
+//    @Override
+//    public void onTinyPlanet() {
+//        ImageData data = mDataAdapter.getImageData(getCurrentId());
+//        if (data == null || !(data instanceof LocalData)) {
+//            return;
+//        }
+//        //mActivity.launchTinyPlanetEditor((LocalData) data);
+//    }
 
     /**
      * @return The ID of the current item, or -1.

@@ -15,7 +15,7 @@ import yskim.sample.camera2porting.FocusOverlayManager.FocusUI;
 import yskim.sample.camera2porting.ui.CameraRootView;
 import yskim.sample.camera2porting.util.Debug;
 
-public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, CameraRootView.MyDisplayListener {
+public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {
     private static final String TAG = "CAM_UI";
     private MainActivity mActivity;
     private PhotoController mController;
@@ -148,8 +148,7 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
         return mRootView;
     }
 
-    public void onCameraOpened(PreferenceGroup prefGroup, ComboPreferences prefs,
-                               Camera.Parameters params, OnPreferenceChangedListener listener) {
+    public void onCameraOpened(PreferenceGroup prefGroup, ComboPreferences prefs, Camera.Parameters params) {
     }
 
     public boolean onBackPressed() {
@@ -182,20 +181,6 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener, Cam
 
     public boolean isCountingDown() {
         return false;
-    }
-
-    public void initDisplayChangeListener() {
-        ((CameraRootView) mRootView).setDisplayChangeListener(this);
-    }
-
-    public void removeDisplayChangeListener() {
-        ((CameraRootView) mRootView).removeDisplayChangeListener();
-    }
-
-    @Override
-    public void onDisplayChanged() {
-        Log.d(TAG, "Device flip detected.");
-        mController.updateCameraOrientation();
     }
 
     @Override

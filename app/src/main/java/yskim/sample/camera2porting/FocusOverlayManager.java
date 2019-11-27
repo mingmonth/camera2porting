@@ -67,12 +67,12 @@ public class FocusOverlayManager {
     }
 
     public interface Listener {
-        public void autoFocus();
-        public void cancelAutoFocus();
-        public boolean capture();
-        public void startFaceDetection();
-        public void stopFaceDetection();
-        public void setFocusParameters();
+//        public void autoFocus();
+//        public void cancelAutoFocus();
+//        public boolean capture();
+//        public void startFaceDetection();
+//        public void stopFaceDetection();
+//        public void setFocusParameters();
     }
 
     private class MainHandler extends Handler {
@@ -85,7 +85,7 @@ public class FocusOverlayManager {
             switch (msg.what) {
                 case RESET_TOUCH_FOCUS: {
                     cancelAutoFocus();
-                    mListener.startFaceDetection();
+//                    mListener.startFaceDetection();
                     break;
                 }
             }
@@ -93,31 +93,30 @@ public class FocusOverlayManager {
     }
 
     public FocusOverlayManager(ComboPreferences preferences, String[] defaultFocusModes,
-                               Parameters parameters, Listener listener,
-                               boolean mirror, Looper looper, FocusUI ui) {
+                               Listener listener, boolean mirror, Looper looper, FocusUI ui) {
         mHandler = new MainHandler(looper);
         mMatrix = new Matrix();
         mPreferences = preferences;
         mDefaultFocusModes = defaultFocusModes;
-        setParameters(parameters);
+        //setParameters(parameters);
         mListener = listener;
         setMirror(mirror);
         mFocusDefault = true;
         mUI = ui;
     }
 
-    public void setParameters(Parameters parameters) {
-        // parameters can only be null when onConfigurationChanged is called
-        // before camera is open. We will just return in this case, because
-        // parameters will be set again later with the right parameters after
-        // camera is open.
-        if (parameters == null) return;
-        mParameters = parameters;
-        mFocusAreaSupported = CameraUtil.isFocusAreaSupported(parameters);
-        mMeteringAreaSupported = CameraUtil.isMeteringAreaSupported(parameters);
-        mLockAeAwbNeeded = (CameraUtil.isAutoExposureLockSupported(mParameters) ||
-                CameraUtil.isAutoWhiteBalanceLockSupported(mParameters));
-    }
+//    public void setParameters(Parameters parameters) {
+//        // parameters can only be null when onConfigurationChanged is called
+//        // before camera is open. We will just return in this case, because
+//        // parameters will be set again later with the right parameters after
+//        // camera is open.
+//        if (parameters == null) return;
+//        mParameters = parameters;
+//        mFocusAreaSupported = CameraUtil.isFocusAreaSupported(parameters);
+//        mMeteringAreaSupported = CameraUtil.isMeteringAreaSupported(parameters);
+//        mLockAeAwbNeeded = (CameraUtil.isAutoExposureLockSupported(mParameters) ||
+//                CameraUtil.isAutoWhiteBalanceLockSupported(mParameters));
+//    }
 
     public void setPreviewSize(int previewWidth, int previewHeight) {
         if (mPreviewRect.width() != previewWidth || mPreviewRect.height() != previewHeight) {
@@ -164,14 +163,14 @@ public class FocusOverlayManager {
     private void lockAeAwbIfNeeded() {
         if (mLockAeAwbNeeded && !mAeAwbLock) {
             mAeAwbLock = true;
-            mListener.setFocusParameters();
+//            mListener.setFocusParameters();
         }
     }
 
     private void unlockAeAwbIfNeeded() {
         if (mLockAeAwbNeeded && mAeAwbLock && (mState != STATE_FOCUSING_SNAP_ON_FINISH)) {
             mAeAwbLock = false;
-            mListener.setFocusParameters();
+//            mListener.setFocusParameters();
         }
     }
 
@@ -334,18 +333,18 @@ public class FocusOverlayManager {
             initializeFocusAreas(x, y);
         }
         // Initialize mMeteringArea.
-        if (mMeteringAreaSupported) {
-            initializeMeteringAreas(x, y);
-        }
+//        if (mMeteringAreaSupported) {
+//            initializeMeteringAreas(x, y);
+//        }
 
         // Use margin to set the focus indicator to the touched area.
         mUI.setFocusPosition(x, y);
 
         // Stop face detection because we want to specify focus and metering area.
-        mListener.stopFaceDetection();
+//        mListener.stopFaceDetection();
 
         // Set the focus area and metering area.
-        mListener.setFocusParameters();
+//        mListener.setFocusParameters();
         if (mFocusAreaSupported) {
             autoFocus();
         } else {  // Just show the indicator in all other cases.
@@ -373,7 +372,7 @@ public class FocusOverlayManager {
 
     private void autoFocus() {
         Log.v(TAG, "Start autofocus.");
-        mListener.autoFocus();
+//        mListener.autoFocus();
         mState = STATE_FOCUSING;
         // Pause the face view because the driver will keep sending face
         // callbacks after the focus completes.
@@ -389,7 +388,6 @@ public class FocusOverlayManager {
         // Otherwise, focus mode stays at auto and the tap area passed to the
         // driver is not reset.
         resetTouchFocus();
-        mListener.cancelAutoFocus();
         mUI.resumeFaceDetection();
         mState = STATE_IDLE;
         updateFocusUI();
@@ -397,10 +395,10 @@ public class FocusOverlayManager {
     }
 
     private void capture() {
-        if (mListener.capture()) {
-            mState = STATE_IDLE;
-            mHandler.removeMessages(RESET_TOUCH_FOCUS);
-        }
+//        if (mListener.capture()) {
+//            mState = STATE_IDLE;
+//            mHandler.removeMessages(RESET_TOUCH_FOCUS);
+//        }
     }
 
     public String getFocusMode() {
@@ -485,9 +483,9 @@ public class FocusOverlayManager {
             initializeFocusAreas(mPreviewRect.centerX(), mPreviewRect.centerY());
         }
         // Reset metering area when no specific region is selected.
-        if (mMeteringAreaSupported) {
-            resetMeteringAreas();
-        }
+//        if (mMeteringAreaSupported) {
+//            resetMeteringAreas();
+//        }
         mFocusDefault = true;
     }
 

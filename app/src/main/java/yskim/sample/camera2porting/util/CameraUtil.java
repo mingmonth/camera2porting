@@ -920,58 +920,6 @@ public class CameraUtil {
         }
     }
 
-//    public static void playVideo(Activity activity, Uri uri, String title) {
-//        try {
-//            boolean isSecureCamera = ((MainActivity)activity).isSecureCamera();
-//            UsageStatistics.onEvent(UsageStatistics.COMPONENT_CAMERA,
-//                    UsageStatistics.ACTION_PLAY_VIDEO, null);
-//            if (!isSecureCamera) {
-//                Intent intent = IntentHelper.getVideoPlayerIntent(activity, uri)
-//                        .putExtra(Intent.EXTRA_TITLE, title)
-//                        .putExtra(KEY_TREAT_UP_AS_BACK, true);
-//                activity.startActivityForResult(intent, MainActivity.REQ_CODE_DONT_SWITCH_TO_PREVIEW);
-//            } else {
-//                // In order not to send out any intent to be intercepted and
-//                // show the lock screen immediately, we just let the secure
-//                // camera activity finish.
-//                activity.finish();
-//            }
-//        } catch (ActivityNotFoundException e) {
-//            Toast.makeText(activity, activity.getString(R.string.video_err),
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-    /**
-     * Starts GMM with the given location shown. If this fails, and GMM could
-     * not be found, we use a geo intent as a fallback.
-     *
-     * @param activity the activity to use for launching the Maps intent.
-     * @param latLong a 2-element array containing {latitude/longitude}.
-     */
-    public static void showOnMap(Activity activity, double[] latLong) {
-        try {
-            // We don't use "geo:latitude,longitude" because it only centers
-            // the MapView to the specified location, but we need a marker
-            // for further operations (routing to/from).
-            // The q=(lat, lng) syntax is suggested by geo-team.
-            String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?f=q&q=(%f,%f)",
-                    latLong[0], latLong[1]);
-            ComponentName compName = new ComponentName(MAPS_PACKAGE_NAME,
-                    MAPS_CLASS_NAME);
-            Intent mapsIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(uri)).setComponent(compName);
-            activity.startActivityForResult(mapsIntent,
-                    MainActivity.REQ_CODE_DONT_SWITCH_TO_PREVIEW);
-        } catch (ActivityNotFoundException e) {
-            // Use the "geo intent" if no GMM is installed
-            Log.e(TAG, "GMM activity not found!", e);
-            String url = String.format(Locale.ENGLISH, "geo:%f,%f", latLong[0], latLong[1]);
-            Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            activity.startActivity(mapsIntent);
-        }
-    }
-
     /**
      * Dumps the stack trace.
      *
