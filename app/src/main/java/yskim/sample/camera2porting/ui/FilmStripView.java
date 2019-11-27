@@ -20,11 +20,11 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
+import java.util.Arrays;
+
 import yskim.sample.camera2porting.MainActivity;
 import yskim.sample.camera2porting.R;
 import yskim.sample.camera2porting.util.Debug;
-
-import java.util.Arrays;
 
 public class FilmStripView extends ViewGroup {
     private static final String TAG = "CAM_FilmStripView";

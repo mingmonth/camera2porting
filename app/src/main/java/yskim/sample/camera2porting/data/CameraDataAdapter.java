@@ -3,11 +3,9 @@ package yskim.sample.camera2porting.data;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 

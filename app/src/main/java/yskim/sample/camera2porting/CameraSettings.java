@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 
 import yskim.sample.camera2porting.util.ApiHelper;
-import yskim.sample.camera2porting.util.CameraUtil;
 
 public class CameraSettings {
     private static final int NOT_FOUND = -1;

@@ -2,19 +2,17 @@ package yskim.sample.camera2porting;
 
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import yskim.sample.camera2porting.CameraManager.CameraProxy;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import yskim.sample.camera2porting.CameraManager.CameraProxy;
 
 import static yskim.sample.camera2porting.util.CameraUtil.Assert;
 

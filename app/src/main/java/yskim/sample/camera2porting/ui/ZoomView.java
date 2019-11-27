@@ -12,11 +12,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-//import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+//import android.widget.ImageView;
 
 public class ZoomView extends ImageView {
 

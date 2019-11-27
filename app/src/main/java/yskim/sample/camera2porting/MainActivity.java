@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import yskim.sample.camera2porting.data.CameraDataAdapter;
@@ -20,7 +20,7 @@ import yskim.sample.camera2porting.util.Debug;
 
 import static yskim.sample.camera2porting.CameraManager.CameraOpenErrorCallback;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private LocalDataAdapter mWrappedDataAdapter;
     private View mCameraModuleRootView;
@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     private LocalDataAdapter mDataAdapter;
     private FilmStripView mFilmStripView;
     private FrameLayout mAboveFilmstripControlLayout;
+    Button mTestButton;
 
     private CameraOpenErrorCallback mCameraOpenErrorCallback =
             new CameraOpenErrorCallback() {
@@ -47,30 +48,6 @@ public class MainActivity extends Activity {
                     CameraUtil.showErrorAndFinish(MainActivity.this, R.string.cannot_connect_camera);
                 }
             };
-
-    /**
-     * Enable/disable swipe-to-filmstrip. Will always disable swipe if in
-     * capture intent.
-     *
-     * @param enable {@code true} to enable swipe.
-     */
-    public void setSwipingEnabled(boolean enable) {
-        if (isCaptureIntent()) {
-            mCameraPreviewData.lockPreview(true);
-        } else {
-            mCameraPreviewData.lockPreview(!enable);
-        }
-    }
-
-    private boolean isCaptureIntent() {
-        if (MediaStore.ACTION_VIDEO_CAPTURE.equals(getIntent().getAction())
-                || MediaStore.ACTION_IMAGE_CAPTURE.equals(getIntent().getAction())
-                || MediaStore.ACTION_IMAGE_CAPTURE_SECURE.equals(getIntent().getAction())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     private void openModule(CameraModule module) {
         module.init(this, mCameraModuleRootView);
@@ -107,29 +84,37 @@ public class MainActivity extends Activity {
         mWrappedDataAdapter = new FixedFirstDataAdapter(new CameraDataAdapter(new ColorDrawable(getResources().getColor(R.color.photo_placeholder))), mCameraPreviewData);
         mFilmStripView = (FilmStripView) findViewById(R.id.filmstrip_view);
 
+        mTestButton = (Button) findViewById(R.id.test_button);
+        mTestButton.setOnClickListener(this);
+
         mCurrentModule = new PhotoModule();
         mCurrentModule.init(this, mCameraModuleRootView);
 
         mDataAdapter = mWrappedDataAdapter;
         mFilmStripView.setDataAdapter(mDataAdapter);
-        if (!isCaptureIntent()) {
-            mDataAdapter.requestLoad(getContentResolver());
-        }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         openModule(mCurrentModule);
-        setSwipingEnabled(true);
-        mFilmStripView.getController().goToFirstItem();
-        mDataAdapter.requestLoad(getContentResolver());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         closeModule(mCurrentModule);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.test_button:
+                Debug.logd(new Exception(), "TEST BUTTON CLICKED!!!");
+                break;
+            default:
+                Debug.logd(new Exception(), "DEFAULT!!!");
+                break;
+        }
     }
 }

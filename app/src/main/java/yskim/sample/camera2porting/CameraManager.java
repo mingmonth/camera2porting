@@ -2,7 +2,6 @@ package yskim.sample.camera2porting;
 
 import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
 import android.hardware.Camera.ErrorCallback;
 import android.hardware.Camera.OnZoomChangeListener;
 import android.hardware.Camera.Parameters;

@@ -1,7 +1,5 @@
 package yskim.sample.camera2porting;
 
-import android.graphics.Rect;
-
 public interface PhotoController {
 
     public static final int PREVIEW_STOPPED = 0;

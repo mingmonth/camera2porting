@@ -1,6 +1,7 @@
 package yskim.sample.camera2porting.util;
 
 import android.os.Build;
+
 import java.lang.reflect.Field;
 
 public class ApiHelper {

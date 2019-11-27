@@ -3,7 +3,6 @@ package yskim.sample.camera2porting;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
 public class ShutterButton extends ImageView {

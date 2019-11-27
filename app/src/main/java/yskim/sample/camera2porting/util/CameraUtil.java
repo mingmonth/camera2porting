@@ -3,8 +3,6 @@ package yskim.sample.camera2porting.util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,7 +32,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Toast;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -42,13 +39,11 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.StringTokenizer;
 
 import yskim.sample.camera2porting.CameraDisabledException;
 import yskim.sample.camera2porting.CameraHolder;
 import yskim.sample.camera2porting.CameraManager;
-import yskim.sample.camera2porting.MainActivity;
 import yskim.sample.camera2porting.R;
 
 public class CameraUtil {

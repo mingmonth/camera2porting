@@ -1,7 +1,5 @@
 package yskim.sample.camera2porting;
 
-import java.io.IOException;
-
 import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -21,6 +19,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
+
+import java.io.IOException;
 
 import static yskim.sample.camera2porting.util.CameraUtil.Assert;
 

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import yskim.sample.camera2porting.MainActivity;
 import yskim.sample.camera2porting.R;
 
 public class FilmstripBottomControls extends RelativeLayout {

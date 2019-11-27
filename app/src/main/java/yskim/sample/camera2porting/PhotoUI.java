@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 
-import yskim.sample.camera2porting.CameraPreference.OnPreferenceChangedListener;
 import yskim.sample.camera2porting.FocusOverlayManager.FocusUI;
-import yskim.sample.camera2porting.ui.CameraRootView;
 import yskim.sample.camera2porting.util.Debug;
 
 public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {

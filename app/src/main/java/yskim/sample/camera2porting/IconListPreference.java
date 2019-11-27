@@ -1,11 +1,11 @@
 package yskim.sample.camera2porting;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+
+import java.util.List;
 
 public class IconListPreference extends ListPreference {
     private int mSingleIconId;
