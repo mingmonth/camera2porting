@@ -25,11 +25,6 @@ public class CameraRootView extends FrameLayout {
     private final Rect mCurrentInsets = new Rect(0, 0, 0, 0);
     private int mOffset = 0;
     private Object mDisplayListener;
-    private MyDisplayListener mListener;
-
-    public interface MyDisplayListener {
-        public void onDisplayChanged();
-    }
 
     public CameraRootView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,60 +33,28 @@ public class CameraRootView extends FrameLayout {
 
     @Override
     protected boolean fitSystemWindows(Rect insets) {
-        // insets include status bar, navigation bar, etc
-        // In this case, we are only concerned with the size of nav bar
-        if (mCurrentInsets.equals(insets)) {
-            // Local copy of the insets is up to date. No need to do anything.
-            return false;
-        }
-
-        if (mOffset == 0) {
-            if (insets.bottom > 0) {
-                mOffset = insets.bottom;
-            } else if (insets.right > 0) {
-                mOffset = insets.right;
-            }
-        }
-        mCurrentInsets.set(insets);
-        // Make sure onMeasure will be called to adapt to the new insets.
-        requestLayout();
         return false;
     }
 
     public void initDisplayListener() {
         if (ApiHelper.HAS_DISPLAY_LISTENER) {
             mDisplayListener = new DisplayListener() {
-
                 @Override
                 public void onDisplayAdded(int arg0) {}
-
                 @Override
                 public void onDisplayChanged(int arg0) {
-                    if (mListener != null) {
-                        mListener.onDisplayChanged();
-                    }
                 }
-
                 @Override
                 public void onDisplayRemoved(int arg0) {}
             };
         }
     }
 
-    public void removeDisplayChangeListener() {
-        mListener = null;
-    }
-
-    public void setDisplayChangeListener(MyDisplayListener listener) {
-        mListener = listener;
-    }
-
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (ApiHelper.HAS_DISPLAY_LISTENER) {
-            ((DisplayManager) getContext().getSystemService(Context.DISPLAY_SERVICE))
-                    .registerDisplayListener((DisplayListener) mDisplayListener, null);
+            ((DisplayManager) getContext().getSystemService(Context.DISPLAY_SERVICE)).registerDisplayListener((DisplayListener) mDisplayListener, null);
         }
     }
 
@@ -99,8 +62,7 @@ public class CameraRootView extends FrameLayout {
     public void onDetachedFromWindow () {
         super.onDetachedFromWindow();
         if (ApiHelper.HAS_DISPLAY_LISTENER) {
-            ((DisplayManager) getContext().getSystemService(Context.DISPLAY_SERVICE))
-                    .unregisterDisplayListener((DisplayListener) mDisplayListener);
+            ((DisplayManager) getContext().getSystemService(Context.DISPLAY_SERVICE)).unregisterDisplayListener((DisplayListener) mDisplayListener);
         }
     }
 
@@ -161,22 +123,7 @@ public class CameraRootView extends FrameLayout {
         // Lay out children
         for (int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
-//            if (v instanceof CameraControls) {
-//                // Lay out camera controls to center on the short side of the screen
-//                // so that they stay in place during rotation
-//                int width = v.getMeasuredWidth();
-//                int height = v.getMeasuredHeight();
-//                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-//                    int left = (l + r - width) / 2;
-//                    v.layout(left, t + mTopMargin, left + width, b - mBottomMargin);
-//                } else {
-//                    int top = (t + b - height) / 2;
-//                    v.layout(l + mLeftMargin, top, r - mRightMargin, top + height);
-//                }
-//            } else
-            {
-                v.layout(l + mLeftMargin, t + mTopMargin, r - mRightMargin, b - mBottomMargin);
-            }
+            v.layout(l + mLeftMargin, t + mTopMargin, r - mRightMargin, b - mBottomMargin);
         }
     }
 }

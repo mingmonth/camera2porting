@@ -1,15 +1,13 @@
 package yskim.sample.camera2porting.data;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.view.View;
 
 import yskim.sample.camera2porting.ui.FilmStripView.DataAdapter;
 import yskim.sample.camera2porting.ui.FilmStripView.ImageData;
+import yskim.sample.camera2porting.util.Debug;
 
-public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
-        implements DataAdapter.Listener {
+public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper implements DataAdapter.Listener {
 
     @SuppressWarnings("unused")
     private static final String TAG = "CAM_FixedFirstDataAdapter";
@@ -24,60 +22,12 @@ public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
      * @param firstData      The {@link LocalData} to be placed at the first
      *                       position.
      */
-    public FixedFirstDataAdapter(
-            LocalDataAdapter wrappedAdapter,
-            LocalData firstData) {
+    public FixedFirstDataAdapter(LocalDataAdapter wrappedAdapter, LocalData firstData) {
         super(wrappedAdapter);
         if (firstData == null) {
             throw new AssertionError("data is null");
         }
         mFirstData = firstData;
-    }
-
-    @Override
-    public LocalData getLocalData(int dataID) {
-        if (dataID == 0) {
-            return mFirstData;
-        }
-        return mAdapter.getLocalData(dataID - 1);
-    }
-
-    @Override
-    public void removeData(Context context, int dataID) {
-        if (dataID > 0) {
-            mAdapter.removeData(context, dataID - 1);
-        }
-    }
-
-    @Override
-    public int findDataByContentUri(Uri uri) {
-        int pos = mAdapter.findDataByContentUri(uri);
-        if (pos != -1) {
-            return pos + 1;
-        }
-        return -1;
-    }
-
-    @Override
-    public void updateData(int pos, LocalData data) {
-        if (pos == 0) {
-            mFirstData = data;
-            if (mListener != null) {
-                mListener.onDataUpdated(new UpdateReporter() {
-                    @Override
-                    public boolean isDataRemoved(int dataID) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isDataUpdated(int dataID) {
-                        return (dataID == 0);
-                    }
-                });
-            }
-        } else {
-            mAdapter.updateData(pos - 1, data);
-        }
     }
 
     @Override
@@ -87,16 +37,19 @@ public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
 
     @Override
     public View getView(Activity activity, int dataID) {
+        Debug.logd(new Exception(), "dataID: " + dataID);
         if (dataID == 0) {
-            return mFirstData.getView(
-                    activity, mSuggestedWidth, mSuggestedHeight, null, null);
+            Debug.logd(new Exception(), "dataID: " + dataID + ", mSuggestedWidth: " + mSuggestedWidth + ", mSuggestedHeight: " + mSuggestedHeight);
+            return mFirstData.getView(activity, mSuggestedWidth, mSuggestedHeight, null, null);
         }
         return mAdapter.getView(activity, dataID - 1);
     }
 
     @Override
     public ImageData getImageData(int dataID) {
+        Debug.logd(new Exception(), "dataID: " + dataID);
         if (dataID == 0) {
+            Debug.logd(new Exception(), "dataID: " + dataID);
             return mFirstData;
         }
         return mAdapter.getImageData(dataID - 1);
@@ -104,36 +57,33 @@ public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
 
     @Override
     public void setListener(Listener listener) {
+        Debug.logd(new Exception(), "");
         mListener = listener;
         mAdapter.setListener((listener == null) ? null : this);
         // The first data is always there. Thus, When the listener is set,
         // we should call listener.onDataLoaded().
         if (mListener != null) {
+            Debug.logd(new Exception(), "");
             mListener.onDataLoaded();
         }
     }
 
     @Override
-    public boolean canSwipeInFullScreen(int dataID) {
-        if (dataID == 0) {
-            return mFirstData.canSwipeInFullScreen();
-        }
-        return mAdapter.canSwipeInFullScreen(dataID - 1);
-    }
-
-    @Override
     public void onDataLoaded() {
+        Debug.logd(new Exception(), "");
         if (mListener == null) {
             return;
         }
         mListener.onDataUpdated(new UpdateReporter() {
             @Override
             public boolean isDataRemoved(int dataID) {
+                Debug.logd(new Exception(), "dataID: " + dataID);
                 return false;
             }
 
             @Override
             public boolean isDataUpdated(int dataID) {
+                Debug.logd(new Exception(), "dataID: " + dataID);
                 return (dataID != 0);
             }
         });
@@ -141,14 +91,17 @@ public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
 
     @Override
     public void onDataUpdated(final UpdateReporter reporter) {
+        Debug.logd(new Exception(), "");
         mListener.onDataUpdated(new UpdateReporter() {
             @Override
             public boolean isDataRemoved(int dataID) {
+                Debug.logd(new Exception(), "dataID: " + dataID);
                 return (dataID != 0) && reporter.isDataRemoved(dataID - 1);
             }
 
             @Override
             public boolean isDataUpdated(int dataID) {
+                Debug.logd(new Exception(), "dataID: " + dataID);
                 return (dataID != 0) && reporter.isDataUpdated(dataID - 1);
             }
         });
@@ -156,11 +109,13 @@ public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper
 
     @Override
     public void onDataInserted(int dataID, ImageData data) {
+        Debug.logd(new Exception(), "dataID: " + dataID + ", data.getWidth: " + data.getWidth() + ", data.getHeight: " + data.getHeight());
         mListener.onDataInserted(dataID + 1, data);
     }
 
     @Override
     public void onDataRemoved(int dataID, ImageData data) {
+        Debug.logd(new Exception(), "dataID: " + dataID + ", data.getWidth: " + data.getWidth() + ", data.getHeight: " + data.getHeight());
         mListener.onDataRemoved(dataID + 1, data);
     }
 }

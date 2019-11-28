@@ -4,32 +4,35 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import yskim.sample.camera2porting.data.CameraDataAdapter;
 import yskim.sample.camera2porting.data.CameraPreviewData;
 import yskim.sample.camera2porting.data.FixedFirstDataAdapter;
-import yskim.sample.camera2porting.data.LocalDataAdapter;
 import yskim.sample.camera2porting.ui.FilmStripView;
 import yskim.sample.camera2porting.util.CameraUtil;
 import yskim.sample.camera2porting.util.Debug;
 
 import static yskim.sample.camera2porting.CameraManager.CameraOpenErrorCallback;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
 
-    private LocalDataAdapter mWrappedDataAdapter;
+    PopupWindow mPopupWindow;
     private View mCameraModuleRootView;
     private CameraPreviewData mCameraPreviewData;
     private CameraModule mCurrentModule;
-    private LocalDataAdapter mDataAdapter;
     private FilmStripView mFilmStripView;
     private FrameLayout mAboveFilmstripControlLayout;
     Button mTestButton;
+    private FilmStripView.DataAdapter mWrappedDataAdapter;
 
     private CameraOpenErrorCallback mCameraOpenErrorCallback =
             new CameraOpenErrorCallback() {
@@ -84,14 +87,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mWrappedDataAdapter = new FixedFirstDataAdapter(new CameraDataAdapter(new ColorDrawable(getResources().getColor(R.color.photo_placeholder))), mCameraPreviewData);
         mFilmStripView = (FilmStripView) findViewById(R.id.filmstrip_view);
 
+        mFilmStripView.setOnTouchListener(this);
+
         mTestButton = (Button) findViewById(R.id.test_button);
         mTestButton.setOnClickListener(this);
 
         mCurrentModule = new PhotoModule();
         mCurrentModule.init(this, mCameraModuleRootView);
 
-        mDataAdapter = mWrappedDataAdapter;
-        mFilmStripView.setDataAdapter(mDataAdapter);
+        mFilmStripView.setDataAdapter(mWrappedDataAdapter);
     }
 
     @Override
@@ -111,10 +115,47 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.test_button:
                 Debug.logd(new Exception(), "TEST BUTTON CLICKED!!!");
+                createTestPopup();
                 break;
             default:
                 Debug.logd(new Exception(), "DEFAULT!!!");
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()) {
+            case R.id.filmstrip_view:
+                Debug.logd(new Exception(), "MAIN TOUCH EVENT!!!");
+                break;
+            default:
+                Debug.logd(new Exception(), "MAIN TOUCH DEFAULT!!!");
+                break;
+        }
+        return false;
+    }
+
+    private void createTestPopup() {
+        View popupView = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        Button cancel = (Button) popupView.findViewById(R.id.Cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+            }
+        });
+
+        Button ok = (Button) popupView.findViewById(R.id.Ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Debug.logd(new Exception(), "OKAY BUTTON CLICKED!!!");
+            }
+        });
     }
 }
