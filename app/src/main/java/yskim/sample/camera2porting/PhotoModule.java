@@ -20,7 +20,6 @@ import yskim.sample.camera2porting.CameraManager.CameraProxy;
 import yskim.sample.camera2porting.util.CameraUtil;
 import yskim.sample.camera2porting.util.Debug;
 
-
 public class PhotoModule implements CameraModule, PhotoController {
 
     private static final String TAG = "CAM_PhotoModule";
@@ -44,7 +43,6 @@ public class PhotoModule implements CameraModule, PhotoController {
     // The activity is going to switch to the specified camera id. This is
     // needed because texture copy is done in GL thread. -1 means camera is not
     // switching.
-    protected int mPendingSwitchCameraId = -1;
     private boolean mOpenCameraFail;
     private boolean mCameraDisabled;
 
@@ -124,11 +122,7 @@ public class PhotoModule implements CameraModule, PhotoController {
     }
 
     private void onCameraOpened() {
-        View root = mUI.getRootView();
         // These depend on camera parameters.
-
-        int width = root.getWidth();
-        int height = root.getHeight();
         openCameraCommon();
     }
 
@@ -203,12 +197,6 @@ public class PhotoModule implements CameraModule, PhotoController {
         }
     }
 
-    @Override
-    public void onCaptureCancelled() {
-        mActivity.setResultEx(Activity.RESULT_CANCELED, new Intent());
-        mActivity.finish();
-    }
-
     private boolean prepareCamera() {
         // We need to check whether the activity is paused before long
         // operations to ensure that onPause() can be done ASAP.
@@ -232,14 +220,11 @@ public class PhotoModule implements CameraModule, PhotoController {
     }
 
     private void onResumeTasks() {
-        Log.v(TAG, "Executing onResumeTasks.");
         if (mOpenCameraFail || mCameraDisabled) return;
-
         if (!prepareCamera()) {
             // Camera failure.
             return;
         }
-
         // If first time initialization is not finished, put it in the
         // message queue.
         if (!mFirstTimeInitialized) {
@@ -257,8 +242,6 @@ public class PhotoModule implements CameraModule, PhotoController {
 
     @Override
     public void onPauseAfterSuper() {
-        Log.v(TAG, "On pause.");
-
         // Reset the focus first. Camera CTS does not guarantee that
         // cancelAutoFocus is allowed after preview stops.
         if (mCameraDevice != null && mCameraState != PREVIEW_STOPPED) {
@@ -268,14 +251,10 @@ public class PhotoModule implements CameraModule, PhotoController {
         // and startPreview hasn't been called, then this is a no-op.
         // (e.g. onResume -> onPause -> onResume).
         stopPreview();
-
         // Remove the messages and runnables in the queue.
         mHandler.removeCallbacksAndMessages(null);
-
         closeCamera();
         resetScreenOn();
-
-        mPendingSwitchCameraId = -1;
     }
 
     @Override
@@ -333,12 +312,6 @@ public class PhotoModule implements CameraModule, PhotoController {
             mCameraDevice.stopPreview();
         }
         setCameraState(PREVIEW_STOPPED);
-    }
-
-    @Override
-    public boolean isCameraIdle() {
-        return (mCameraState == IDLE) ||
-                (mCameraState == PREVIEW_STOPPED);
     }
 
     @Override

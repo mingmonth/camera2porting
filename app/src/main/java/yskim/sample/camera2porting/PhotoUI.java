@@ -57,24 +57,6 @@ public class PhotoUI implements TextureView.SurfaceTextureListener {
         mTextureView.addOnLayoutChangeListener(mLayoutListener);
     }
 
-    public void updatePreviewAspectRatio(float aspectRatio) {
-        if (aspectRatio <= 0) {
-            Log.e(TAG, "Invalid aspect ratio: " + aspectRatio);
-            return;
-        }
-        if (aspectRatio < 1f) {
-            aspectRatio = 1f / aspectRatio;
-        }
-
-        if (mAspectRatio != aspectRatio) {
-            mAspectRatio = aspectRatio;
-            // Update transform matrix with the new aspect ratio.
-            if (mPreviewWidth != 0 && mPreviewHeight != 0) {
-                setTransformMatrix(mPreviewWidth, mPreviewHeight);
-            }
-        }
-    }
-
     private void setTransformMatrix(int width, int height) {
         mMatrix = mTextureView.getTransform(mMatrix);
         float scaleX = 1f, scaleY = 1f;
@@ -149,60 +131,10 @@ public class PhotoUI implements TextureView.SurfaceTextureListener {
     }
 
     public boolean onBackPressed() {
-        // In image capture mode, back button should:
-        // 1) if there is any popup, dismiss them, 2) otherwise, get out of
-        // image capture
-        if (!mController.isCameraIdle()) {
-            // ignore backs while we're taking a picture
-            return true;
-        } else {
             return false;
-        }
     }
-
-    public boolean isShutterPressed() {
-        return false;
-    }
-
-    /**
-     * Enables or disables the shutter button.
-     */
-    public void enableShutter(boolean enabled) {
-    }
-
-//    public void pressShutterButton() {}
 
     public SurfaceTexture getSurfaceTexture() {
         return mSurfaceTexture;
     }
-
-    public boolean isCountingDown() {
-        return false;
-    }
-
-//    @Override
-//    public boolean hasFaces() {
-//        return false;
-//    }
-//
-//    @Override
-//    public void clearFocus() {}
-//
-//    @Override
-//    public void setFocusPosition(int x, int y) {}
-//
-//    @Override
-//    public void onFocusStarted() {}
-//
-//    @Override
-//    public void onFocusSucceeded(boolean timeOut) {}
-//
-//    @Override
-//    public void onFocusFailed(boolean timeOut) {}
-//
-//    @Override
-//    public void pauseFaceDetection() {}
-//
-//    @Override
-//    public void resumeFaceDetection() {}
 }

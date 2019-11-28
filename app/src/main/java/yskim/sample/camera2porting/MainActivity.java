@@ -67,11 +67,6 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         return mCameraOpenErrorCallback;
     }
 
-    protected void setResultEx(int resultCode, Intent data) {
-        Debug.logd(new Exception(), "resultCode: " + resultCode + ", data: " + data);
-        setResult(resultCode, data);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
