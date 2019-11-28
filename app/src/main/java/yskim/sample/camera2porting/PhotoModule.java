@@ -1,14 +1,11 @@
 package yskim.sample.camera2porting;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -19,13 +16,12 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
 
-import yskim.sample.camera2porting.CameraManager.CameraAFMoveCallback;
 import yskim.sample.camera2porting.CameraManager.CameraProxy;
 import yskim.sample.camera2porting.util.CameraUtil;
 import yskim.sample.camera2porting.util.Debug;
 
 
-public class PhotoModule implements CameraModule, PhotoController, FocusOverlayManager.Listener {
+public class PhotoModule implements CameraModule, PhotoController {
 
     private static final String TAG = "CAM_PhotoModule";
 
@@ -56,28 +52,12 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
 
     // The degrees of the device rotated clockwise from its natural orientation.
     private int mOrientation = OrientationEventListener.ORIENTATION_UNKNOWN;
-    private ComboPreferences mPreferences;
-
-//    private static final String sTempCropFilename = "crop-temp";
     private ContentProviderClient mMediaProviderClient;
-
-    // Indicates whether we are using front camera
-    private boolean mMirror;
     private boolean mFirstTimeInitialized;
-
     private int mCameraState = PREVIEW_STOPPED;
-    private boolean mSnapshotOnIdle = false;
-
     private ContentResolver mContentResolver;
-
     private final CameraErrorCallback mErrorCallback = new CameraErrorCallback();
-
-    // This handles everything about focus.
-    private FocusOverlayManager mFocusManager;
-
     private final Handler mHandler = new MainHandler();
-
-    private PreferenceGroup mPreferenceGroup;
 
     // True if all the parameters needed to start preview is ready.
     private boolean mCameraPreviewParamsReady = false;
@@ -94,10 +74,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-//                case SETUP_PREVIEW: {
-//                    setupPreview();
-//                    break;
-//                }
                 case CLEAR_SCREEN_DELAY: {
                     mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     break;
@@ -128,16 +104,9 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
     public void init(MainActivity activity, View parent) {
         mActivity = activity;
         mUI = new PhotoUI(activity, this, parent);
-        mPreferences = new ComboPreferences(mActivity);
-        CameraSettings.upgradeGlobalPreferences(mPreferences.getGlobal());
-        mCameraId = getPreferredCameraId(mPreferences);
-
+        mCameraId = 0;
         Debug.logd(new Exception(), "mCameraId : " + mCameraId);
-
         mContentResolver = mActivity.getContentResolver();
-
-        mPreferences.setLocalId(mActivity, mCameraId);
-        CameraSettings.upgradeLocalPreferences(mPreferences.getLocal());
     }
 
     @Override
@@ -160,14 +129,12 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
 
         int width = root.getWidth();
         int height = root.getHeight();
-        mFocusManager.setPreviewSize(width, height);
         openCameraCommon();
     }
 
     // either open a new camera or switch cameras
     private void openCameraCommon() {
-        loadCameraPreferences();
-        mUI.onCameraOpened(mPreferenceGroup, mPreferences, mParameters);
+        mUI.onCameraOpened(mParameters);
     }
 
     private void keepMediaProviderInstance() {
@@ -207,16 +174,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private final class AutoFocusMoveCallback
-            implements CameraAFMoveCallback {
-        @Override
-        public void onAutoFocusMoving(
-                boolean moving, CameraProxy camera) {
-            mFocusManager.onAutoFocusMoving(moving);
-        }
-    }
-
     private void setCameraState(int state) {
         mCameraState = state;
         switch (state) {
@@ -227,22 +184,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
             case PhotoController.IDLE:
                 break;
         }
-    }
-
-    private int getPreferredCameraId(ComboPreferences preferences) {
-        int intentCameraId = CameraUtil.getCameraFacingIntentExtras(mActivity);
-        if (intentCameraId != -1) {
-            // Testing purpose. Launch a specific camera through the intent
-            // extras.
-            return intentCameraId;
-        } else {
-            return CameraSettings.readPreferredCameraId(preferences);
-        }
-    }
-
-    private void loadCameraPreferences() {
-        CameraSettings settings = new CameraSettings(mActivity, mCameraId, CameraHolder.instance().getCameraInfo());
-        mPreferenceGroup = settings.getPreferenceGroup(R.xml.camera_preferences);
     }
 
     @Override
@@ -279,8 +220,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
             return false;
         }
         mParameters = mCameraDevice.getParameters();
-
-        if (mFocusManager == null) initializeFocusManager();
         mHandler.sendEmptyMessage(CAMERA_OPEN_DONE);
         mCameraPreviewParamsReady = true;
         startPreview();
@@ -337,26 +276,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
         resetScreenOn();
 
         mPendingSwitchCameraId = -1;
-        if (mFocusManager != null) mFocusManager.removeMessages();
-    }
-
-    /**
-     * The focus manager is the first UI related element to get initialized,
-     * and it requires the RenderOverlay, so initialize it here
-     */
-    private void initializeFocusManager() {
-        // Create FocusManager object. startPreview needs it.
-        // if mFocusManager not null, reuse it
-        // otherwise create a new instance
-        if (mFocusManager != null) {
-            mFocusManager.removeMessages();
-        } else {
-            CameraInfo info = CameraHolder.instance().getCameraInfo()[mCameraId];
-            mMirror = (info.facing == CameraInfo.CAMERA_FACING_FRONT);
-            String[] defaultFocusModes = mActivity.getResources().getStringArray(
-                    R.array.pref_camera_focusmode_default_array);
-            mFocusManager = new FocusOverlayManager(mPreferences, defaultFocusModes, this, mMirror, mActivity.getMainLooper(), mUI);
-        }
     }
 
     @Override
@@ -371,15 +290,8 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
             CameraHolder.instance().release();
             mCameraDevice = null;
             setCameraState(PREVIEW_STOPPED);
-            mFocusManager.onCameraReleased();
         }
     }
-
-    /** Only called by UI thread. */
-//    private void setupPreview() {
-//        mFocusManager.resetTouchFocus();
-//        startPreview();
-//    }
 
     /** This can run on a background thread, post any view updates to MainHandler. */
     private void startPreview() {
@@ -412,7 +324,6 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
 
         Debug.logd(new Exception(), "startPreview");
         mCameraDevice.startPreview();
-        mFocusManager.onPreviewStarted();
     }
 
     @Override
@@ -422,15 +333,12 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
             mCameraDevice.stopPreview();
         }
         setCameraState(PREVIEW_STOPPED);
-        if (mFocusManager != null) mFocusManager.onPreviewStopped();
     }
 
     @Override
     public boolean isCameraIdle() {
         return (mCameraState == IDLE) ||
-                (mCameraState == PREVIEW_STOPPED) ||
-                ((mFocusManager != null) && mFocusManager.isFocusCompleted()
-                        && (mCameraState != SWITCHING_CAMERA));
+                (mCameraState == PREVIEW_STOPPED);
     }
 
     @Override
@@ -448,5 +356,4 @@ public class PhotoModule implements CameraModule, PhotoController, FocusOverlayM
         mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mHandler.sendEmptyMessageDelayed(CLEAR_SCREEN_DELAY, SCREEN_DELAY);
     }
-
 }

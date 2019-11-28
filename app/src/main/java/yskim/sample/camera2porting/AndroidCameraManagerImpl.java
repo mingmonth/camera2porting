@@ -719,45 +719,6 @@ public class AndroidCameraManagerImpl implements CameraManager {
         }
     }
 
-//    private static class FaceDetectionCallbackForward implements FaceDetectionListener {
-//        private final Handler mHandler;
-//        private final CameraFaceDetectionCallback mCallback;
-//        private final CameraProxy mCamera;
-//
-//        /**
-//         * Returns a new instance of {@link FaceDetectionCallbackForward}.
-//         *
-//         * @param handler The handler in which the callback will be invoked in.
-//         * @param camera  The {@link CameraProxy} which the callback is from.
-//         * @param cb      The callback to be invoked.
-//         * @return        The instance of the {@link FaceDetectionCallbackForward},
-//         *                or null if any parameter is null.
-//         */
-//        public static FaceDetectionCallbackForward getNewInstance(
-//                Handler handler, CameraProxy camera, CameraFaceDetectionCallback cb) {
-//            if (handler == null || camera == null || cb == null) return null;
-//            return new FaceDetectionCallbackForward(handler, camera, cb);
-//        }
-//
-//        private FaceDetectionCallbackForward(
-//                Handler h, CameraProxy camera, CameraFaceDetectionCallback cb) {
-//            mHandler = h;
-//            mCamera = camera;
-//            mCallback = cb;
-//        }
-//
-//        @Override
-//        public void onFaceDetection(
-//                final Camera.Face[] faces, Camera camera) {
-//            mHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mCallback.onFaceDetection(faces, mCamera);
-//                }
-//            });
-//        }
-//    }
-
     /**
      * A callback helps to invoke the original callback on another
      * {@link android.os.Handler}.

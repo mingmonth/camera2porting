@@ -702,12 +702,11 @@ public class CameraUtil {
         matrix.postTranslate(viewWidth / 2f, viewHeight / 2f);
     }
 
-    public static void prepareMatrix(Matrix matrix, boolean mirror, int displayOrientation,
-                                     Rect previewRect) {
+    public static void prepareMatrix(Matrix matrix, boolean mirror, Rect previewRect) {
         // Need mirror for front camera.
         matrix.setScale(mirror ? -1 : 1, 1);
         // This is the value for android.hardware.Camera.setDisplayOrientation.
-        matrix.postRotate(displayOrientation);
+        //matrix.postRotate(displayOrientation);
 
         // Camera driver coordinates range from (-1000, -1000) to (1000, 1000).
         // We need to map camera driver coordinates to preview rect coordinates

@@ -67,20 +67,6 @@ public interface CameraManager {
     }
 
     /**
-     * An interface which wraps
-     * {@link android.hardware.Camera.FaceDetectionListener}.
-     */
-//    public interface CameraFaceDetectionCallback {
-//        /**
-//         * Callback for face detection.
-//         *
-//         * @param faces   Recognized face in the preview.
-//         * @param camera  The camera which the preview image comes from.
-//         */
-//        public void onFaceDetection(Camera.Face[] faces, CameraProxy camera);
-//    }
-
-    /**
      * An interface to be called for any exception caught when opening the
      * camera device. This error callback is different from the one defined
      * in the framework, {@link android.hardware.Camera.ErrorCallback}, which

@@ -10,10 +10,9 @@ import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 
-import yskim.sample.camera2porting.FocusOverlayManager.FocusUI;
 import yskim.sample.camera2porting.util.Debug;
 
-public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {
+public class PhotoUI implements TextureView.SurfaceTextureListener {
     private static final String TAG = "CAM_UI";
     private MainActivity mActivity;
     private PhotoController mController;
@@ -146,7 +145,7 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {
         return mRootView;
     }
 
-    public void onCameraOpened(PreferenceGroup prefGroup, ComboPreferences prefs, Camera.Parameters params) {
+    public void onCameraOpened(Camera.Parameters params) {
     }
 
     public boolean onBackPressed() {
@@ -171,7 +170,7 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {
     public void enableShutter(boolean enabled) {
     }
 
-    public void pressShutterButton() {}
+//    public void pressShutterButton() {}
 
     public SurfaceTexture getSurfaceTexture() {
         return mSurfaceTexture;
@@ -181,29 +180,29 @@ public class PhotoUI implements FocusUI, TextureView.SurfaceTextureListener {
         return false;
     }
 
-    @Override
-    public boolean hasFaces() {
-        return false;
-    }
-
-    @Override
-    public void clearFocus() {}
-
-    @Override
-    public void setFocusPosition(int x, int y) {}
-
-    @Override
-    public void onFocusStarted() {}
-
-    @Override
-    public void onFocusSucceeded(boolean timeOut) {}
-
-    @Override
-    public void onFocusFailed(boolean timeOut) {}
-
-    @Override
-    public void pauseFaceDetection() {}
-
-    @Override
-    public void resumeFaceDetection() {}
+//    @Override
+//    public boolean hasFaces() {
+//        return false;
+//    }
+//
+//    @Override
+//    public void clearFocus() {}
+//
+//    @Override
+//    public void setFocusPosition(int x, int y) {}
+//
+//    @Override
+//    public void onFocusStarted() {}
+//
+//    @Override
+//    public void onFocusSucceeded(boolean timeOut) {}
+//
+//    @Override
+//    public void onFocusFailed(boolean timeOut) {}
+//
+//    @Override
+//    public void pauseFaceDetection() {}
+//
+//    @Override
+//    public void resumeFaceDetection() {}
 }
