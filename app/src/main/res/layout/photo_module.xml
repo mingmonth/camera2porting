@@ -34,8 +34,4 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-
-    <!-- <include layout="@layout/camera_controls"
-        android:layout_gravity="center"
-        style="@style/CameraControls"/> -->
 </merge>
