@@ -1,9 +1,12 @@
 package yskim.sample.camera2porting;
 
+
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +27,10 @@ import yskim.sample.camera2porting.util.Debug;
 import static yskim.sample.camera2porting.CameraManager.CameraOpenErrorCallback;
 
 public class MainActivity extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
+
+    public static final int HIDE_CONTROLS = 1;
+    private static final long SHOW_CONTROLS_TIMEOUT_MS = 3000;
+    private Handler mMainHandler;
 
     PopupWindow mPopupWindow;
     private View mCameraModuleRootView;
@@ -67,6 +74,11 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         return mCameraOpenErrorCallback;
     }
 
+    public void setControlsVisibility(boolean visible) {
+        Debug.loge(new Exception(), "DELAY LAYOUT GONE!!!");
+        mAboveFilmstripControlLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +86,11 @@ public class MainActivity extends Activity implements View.OnClickListener, View
 
         mAboveFilmstripControlLayout = (FrameLayout) findViewById(R.id.camera_above_filmstrip_layout);
         mAboveFilmstripControlLayout.setFitsSystemWindows(true);
+        mAboveFilmstripControlLayout.setVisibility(View.GONE);
+
+        mAboveFilmstripControlLayout.setOnTouchListener(this);
+
+        mMainHandler = new MainHandler(getMainLooper());
 
         LayoutInflater inflater = getLayoutInflater();
         View rootLayout = inflater.inflate(R.layout.camera, null, false);
@@ -94,6 +111,20 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.test_button:
+                Debug.logd(new Exception(), "TEST BUTTON CLICKED!!!");
+                resetShowControlsTimeoutMs();
+                createTestPopup();
+                break;
+            default:
+                Debug.logd(new Exception(), "DEFAULT!!!");
+                break;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         openModule(mCurrentModule);
@@ -105,16 +136,15 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         closeModule(mCurrentModule);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.test_button:
-                Debug.logd(new Exception(), "TEST BUTTON CLICKED!!!");
-                createTestPopup();
-                break;
-            default:
-                Debug.logd(new Exception(), "DEFAULT!!!");
-                break;
+    private boolean isControlsShowing() {
+        return mAboveFilmstripControlLayout.getVisibility() == View.VISIBLE ? true : false;
+    }
+
+    public void resetShowControlsTimeoutMs() {
+        mMainHandler.removeMessages(HIDE_CONTROLS);
+        if (isControlsShowing()) {
+            Debug.logd(new Exception(), "");
+            mMainHandler.sendEmptyMessageDelayed(HIDE_CONTROLS, SHOW_CONTROLS_TIMEOUT_MS);
         }
     }
 
@@ -122,13 +152,46 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
             case R.id.filmstrip_view:
+                boolean visible = false;
                 Debug.logd(new Exception(), "MAIN TOUCH EVENT!!!");
+                if (isControlsShowing()) {
+//                    mAboveFilmstripControlLayout.setVisibility(View.GONE);
+//                    Debug.logd(new Exception(), "LAYOUT IS GONE!!!");
+//                    visible = false;
+                } else {
+                    mAboveFilmstripControlLayout.setVisibility(View.VISIBLE);
+                    Debug.logd(new Exception(), "LAYOUT IS VISIBLE!!!");
+                    visible = true;
+                }
+
+                if (visible) {
+                    mMainHandler.sendEmptyMessageDelayed(HIDE_CONTROLS, SHOW_CONTROLS_TIMEOUT_MS);
+                }
+
+                break;
+            case R.id.camera_above_filmstrip_layout:
+                Debug.logd(new Exception(), "CONTROLS TOUCH EVENT!!!");
+                resetShowControlsTimeoutMs();
                 break;
             default:
                 Debug.logd(new Exception(), "MAIN TOUCH DEFAULT!!!");
                 break;
         }
         return false;
+    }
+
+    private class MainHandler extends Handler {
+        public MainHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == HIDE_CONTROLS) {
+                removeMessages(HIDE_CONTROLS);
+                MainActivity.this.setControlsVisibility(false);
+            }
+        }
     }
 
     private void createTestPopup() {
