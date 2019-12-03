@@ -1,10 +1,12 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 import android.view.View;
 
+import yskim.sample.camera2porting.CameraActivity;
+
 public interface CameraModule {
 
-    public void init(MainActivity activity, View frame);
+    public void init(CameraActivity activity, View frame);
 
     public void onPauseBeforeSuper();
 

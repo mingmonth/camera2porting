@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -12,9 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import yskim.sample.camera2porting.CameraManager.CameraProxy;
+import yskim.sample.camera2porting.camera.CameraManager.CameraProxy;
 
-import static yskim.sample.camera2porting.util.CameraUtil.Assert;
+import static yskim.sample.camera2porting.camera.util.CameraUtil.Assert;
 
 public class CameraHolder {
     private static final String TAG = "CameraHolder";

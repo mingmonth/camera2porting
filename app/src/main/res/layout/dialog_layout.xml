@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="yskim.sample.camera2porting.MainActivity">
+    tools:context="yskim.sample.camera2porting.CameraActivity">
 
     <LinearLayout
         android:layout_width="200dp"

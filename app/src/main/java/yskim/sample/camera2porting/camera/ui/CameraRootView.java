@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting.ui;
+package yskim.sample.camera2porting.camera.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,9 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import yskim.sample.camera2porting.util.ApiHelper;
-import yskim.sample.camera2porting.util.CameraUtil;
-import yskim.sample.camera2porting.util.Debug;
+import yskim.sample.camera2porting.camera.util.ApiHelper;
+import yskim.sample.camera2porting.camera.util.CameraUtil;
+import yskim.sample.camera2porting.camera.util.Debug;
 
 @SuppressLint("NewApi")
 public class CameraRootView extends FrameLayout {

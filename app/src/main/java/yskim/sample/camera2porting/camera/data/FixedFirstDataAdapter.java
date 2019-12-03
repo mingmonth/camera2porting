@@ -1,11 +1,11 @@
-package yskim.sample.camera2porting.data;
+package yskim.sample.camera2porting.camera.data;
 
 import android.app.Activity;
 import android.view.View;
 
-import yskim.sample.camera2porting.ui.FilmStripView.DataAdapter;
-import yskim.sample.camera2porting.ui.FilmStripView.ImageData;
-import yskim.sample.camera2porting.util.Debug;
+import yskim.sample.camera2porting.camera.ui.FilmStripView.DataAdapter;
+import yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData;
+import yskim.sample.camera2porting.camera.util.Debug;
 
 public class FixedFirstDataAdapter extends AbstractLocalDataAdapterWrapper implements DataAdapter.Listener {
 

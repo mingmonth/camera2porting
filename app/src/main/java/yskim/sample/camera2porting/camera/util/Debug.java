@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting.util;
+package yskim.sample.camera2porting.camera.util;
 
 import android.util.Log;
 

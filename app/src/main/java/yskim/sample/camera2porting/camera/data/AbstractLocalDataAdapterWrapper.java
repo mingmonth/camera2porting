@@ -1,6 +1,6 @@
-package yskim.sample.camera2porting.data;
+package yskim.sample.camera2porting.camera.data;
 
-import yskim.sample.camera2porting.ui.FilmStripView;
+import yskim.sample.camera2porting.camera.ui.FilmStripView;
 
 public abstract class AbstractLocalDataAdapterWrapper implements FilmStripView.DataAdapter {
 

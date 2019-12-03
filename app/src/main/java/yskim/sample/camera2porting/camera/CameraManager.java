@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
@@ -74,7 +74,7 @@ public interface CameraManager {
      */
     public interface CameraOpenErrorCallback {
         /**
-         * Callback when {@link yskim.sample.camera2porting.CameraDisabledException} is
+         * Callback when {@link CameraDisabledException} is
          * caught.
          *
          * @param cameraId The disabled camera.
@@ -82,7 +82,7 @@ public interface CameraManager {
         public void onCameraDisabled(int cameraId);
 
         /**
-         * Callback when {@link yskim.sample.camera2porting.CameraHardwareException} is
+         * Callback when {@link CameraHardwareException} is
          * caught.
          *
          * @param cameraId The camera with the hardware failure.
@@ -93,7 +93,7 @@ public interface CameraManager {
          * Callback when {@link java.io.IOException} is caught during
          * {@link android.hardware.Camera#reconnect()}.
          *
-         * @param mgr The {@link yskim.sample.camera2porting.CameraManager}
+         * @param mgr The {@link CameraManager}
          *            with the reconnect failure.
          */
         public void onReconnectionFailure(CameraManager mgr);

@@ -1,10 +1,10 @@
-package yskim.sample.camera2porting.data;
+package yskim.sample.camera2porting.camera.data;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import yskim.sample.camera2porting.ui.FilmStripView.ImageData;
+import yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData;
 
 public class CameraDataAdapter implements LocalDataAdapter {
     @Override

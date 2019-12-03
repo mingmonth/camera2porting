@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 public class CameraManagerFactory {
 

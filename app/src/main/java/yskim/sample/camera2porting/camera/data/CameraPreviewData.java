@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting.data;
+package yskim.sample.camera2porting.camera.data;
 
 import android.view.View;
 

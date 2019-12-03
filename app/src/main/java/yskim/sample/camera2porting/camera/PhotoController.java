@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 public interface PhotoController {
     int PREVIEW_STOPPED = 0;

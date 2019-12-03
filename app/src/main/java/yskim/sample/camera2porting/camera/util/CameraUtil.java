@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting.util;
+package yskim.sample.camera2porting.camera.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,10 +41,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import yskim.sample.camera2porting.CameraDisabledException;
-import yskim.sample.camera2porting.CameraHolder;
-import yskim.sample.camera2porting.CameraManager;
 import yskim.sample.camera2porting.R;
+import yskim.sample.camera2porting.camera.CameraDisabledException;
+import yskim.sample.camera2porting.camera.CameraHolder;
+import yskim.sample.camera2porting.camera.CameraManager;
 
 public class CameraUtil {
     private static final String TAG = "Util";

@@ -1,9 +1,7 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
-import android.app.Activity;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera.Parameters;
 import android.os.Handler;
@@ -16,9 +14,11 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
 
-import yskim.sample.camera2porting.CameraManager.CameraProxy;
-import yskim.sample.camera2porting.util.CameraUtil;
-import yskim.sample.camera2porting.util.Debug;
+import yskim.sample.camera2porting.CameraActivity;
+import yskim.sample.camera2porting.R;
+import yskim.sample.camera2porting.camera.CameraManager.CameraProxy;
+import yskim.sample.camera2porting.camera.util.CameraUtil;
+import yskim.sample.camera2porting.camera.util.Debug;
 
 public class PhotoModule implements CameraModule, PhotoController {
 
@@ -32,7 +32,7 @@ public class PhotoModule implements CameraModule, PhotoController {
     private static final int CAMERA_DISABLED = 10;
 
     // copied from Camera hierarchy
-    private MainActivity mActivity;
+    private CameraActivity mActivity;
     private CameraProxy mCameraDevice;
     private int mCameraId;
     private Parameters mParameters;
@@ -99,7 +99,7 @@ public class PhotoModule implements CameraModule, PhotoController {
     }
 
     @Override
-    public void init(MainActivity activity, View parent) {
+    public void init(CameraActivity activity, View parent) {
         mActivity = activity;
         mUI = new PhotoUI(activity, this, parent);
         mCameraId = 0;

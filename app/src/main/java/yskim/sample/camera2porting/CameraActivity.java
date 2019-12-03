@@ -17,16 +17,19 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import yskim.sample.camera2porting.data.CameraDataAdapter;
-import yskim.sample.camera2porting.data.CameraPreviewData;
-import yskim.sample.camera2porting.data.FixedFirstDataAdapter;
-import yskim.sample.camera2porting.ui.FilmStripView;
-import yskim.sample.camera2porting.util.CameraUtil;
-import yskim.sample.camera2porting.util.Debug;
+import yskim.sample.camera2porting.camera.CameraManager;
+import yskim.sample.camera2porting.camera.CameraModule;
+import yskim.sample.camera2porting.camera.PhotoModule;
+import yskim.sample.camera2porting.camera.data.CameraDataAdapter;
+import yskim.sample.camera2porting.camera.data.CameraPreviewData;
+import yskim.sample.camera2porting.camera.data.FixedFirstDataAdapter;
+import yskim.sample.camera2porting.camera.ui.FilmStripView;
+import yskim.sample.camera2porting.camera.util.CameraUtil;
+import yskim.sample.camera2porting.camera.util.Debug;
 
-import static yskim.sample.camera2porting.CameraManager.CameraOpenErrorCallback;
+import static yskim.sample.camera2porting.camera.CameraManager.CameraOpenErrorCallback;
 
-public class MainActivity extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
+public class CameraActivity extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
 
     public static final int HIDE_CONTROLS = 1;
     private static final long SHOW_CONTROLS_TIMEOUT_MS = 3000;
@@ -45,17 +48,17 @@ public class MainActivity extends Activity implements View.OnClickListener, View
             new CameraOpenErrorCallback() {
                 @Override
                 public void onCameraDisabled(int cameraId) {
-                    CameraUtil.showErrorAndFinish(MainActivity.this, R.string.camera_disabled);
+                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.camera_disabled);
                 }
 
                 @Override
                 public void onDeviceOpenFailure(int cameraId) {
-                    CameraUtil.showErrorAndFinish(MainActivity.this, R.string.cannot_connect_camera);
+                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.cannot_connect_camera);
                 }
 
                 @Override
                 public void onReconnectionFailure(CameraManager mgr) {
-                    CameraUtil.showErrorAndFinish(MainActivity.this, R.string.cannot_connect_camera);
+                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.cannot_connect_camera);
                 }
             };
 
@@ -189,7 +192,7 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         public void handleMessage(Message msg) {
             if (msg.what == HIDE_CONTROLS) {
                 removeMessages(HIDE_CONTROLS);
-                MainActivity.this.setControlsVisibility(false);
+                CameraActivity.this.setControlsVisibility(false);
             }
         }
     }

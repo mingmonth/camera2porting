@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting.ui;
+package yskim.sample.camera2porting.camera.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 
 import java.util.Arrays;
 
-import yskim.sample.camera2porting.MainActivity;
-import yskim.sample.camera2porting.data.LocalDataAdapter;
-import yskim.sample.camera2porting.util.Debug;
+import yskim.sample.camera2porting.CameraActivity;
+import yskim.sample.camera2porting.camera.data.LocalDataAdapter;
+import yskim.sample.camera2porting.camera.util.Debug;
 
 public class FilmStripView extends ViewGroup {
 
-    private MainActivity mActivity;
+    private CameraActivity mActivity;
     private DataAdapter mDataAdapter;
     private final Rect mDrawArea = new Rect();
 
@@ -91,7 +91,7 @@ public class FilmStripView extends ViewGroup {
 
     public FilmStripView(Context context) {
         super(context);
-        init((MainActivity) context);
+        init((CameraActivity) context);
     }
 
     /**
@@ -99,7 +99,7 @@ public class FilmStripView extends ViewGroup {
      */
     public FilmStripView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init((MainActivity) context);
+        init((CameraActivity) context);
     }
 
     /**
@@ -107,10 +107,10 @@ public class FilmStripView extends ViewGroup {
      */
     public FilmStripView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init((MainActivity) context);
+        init((CameraActivity) context);
     }
 
-    private void init(MainActivity cameraActivity) {
+    private void init(CameraActivity cameraActivity) {
         setWillNotDraw(false);
         mActivity = cameraActivity;
         DisplayMetrics metrics = new DisplayMetrics();
@@ -285,8 +285,8 @@ public class FilmStripView extends ViewGroup {
          * The final layout of the view returned by
          * {@link DataAdapter#getView(android.app.Activity, int)} will
          * preserve the aspect ratio of
-         * {@link yskim.sample.camera2porting.ui.FilmStripView.ImageData#getWidth()} and
-         * {@link yskim.sample.camera2porting.ui.FilmStripView.ImageData#getHeight()}.
+         * {@link yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData#getWidth()} and
+         * {@link yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData#getHeight()}.
          */
         int getWidth();
 
@@ -295,8 +295,8 @@ public class FilmStripView extends ViewGroup {
          * The final layout of the view returned by
          * {@link DataAdapter#getView(android.app.Activity, int)} will
          * preserve the aspect ratio of
-         * {@link yskim.sample.camera2porting.ui.FilmStripView.ImageData#getWidth()} and
-         * {@link yskim.sample.camera2porting.ui.FilmStripView.ImageData#getHeight()}.
+         * {@link yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData#getWidth()} and
+         * {@link yskim.sample.camera2porting.camera.ui.FilmStripView.ImageData#getHeight()}.
          */
         int getHeight();
 

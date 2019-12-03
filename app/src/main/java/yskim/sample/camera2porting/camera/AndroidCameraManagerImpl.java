@@ -1,4 +1,4 @@
-package yskim.sample.camera2porting;
+package yskim.sample.camera2porting.camera;
 
 import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
@@ -22,7 +22,9 @@ import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
-import static yskim.sample.camera2porting.util.CameraUtil.Assert;
+import yskim.sample.camera2porting.camera.util.Debug;
+
+import static yskim.sample.camera2porting.camera.util.CameraUtil.Assert;
 
 public class AndroidCameraManagerImpl implements CameraManager {
     private static final String TAG = "CAM_" +
@@ -75,6 +77,21 @@ public class AndroidCameraManagerImpl implements CameraManager {
         HandlerThread ht = new HandlerThread("Camera Handler Thread");
         ht.start();
         mCameraHandler = new CameraHandler(ht.getLooper());
+    }
+
+    @Override
+    public CameraManager.CameraProxy cameraOpen(
+            Handler handler, int cameraId, CameraOpenErrorCallback callback) {
+        mCameraHandler.obtainMessage(OPEN_CAMERA, cameraId, 0,
+                CameraOpenErrorCallbackForward.getNewInstance(
+                        handler, callback)).sendToTarget();
+        //mCameraHandler.waitDone();
+        mCamera = android.hardware.Camera.open(cameraId);
+        if (mCamera != null) {
+            return new AndroidCameraProxyImpl();
+        } else {
+            return null;
+        }
     }
 
     private class CameraHandler extends Handler {
@@ -154,7 +171,7 @@ public class AndroidCameraManagerImpl implements CameraManager {
                 try {
                     waitDoneLock.wait();
                 } catch (InterruptedException ex) {
-                    Log.v(TAG, "waitDone interrupted");
+                    Debug.logv(new Exception(), "waitDone interrupted");
                     return false;
                 }
             }
@@ -171,6 +188,7 @@ public class AndroidCameraManagerImpl implements CameraManager {
                 switch (msg.what) {
                     case OPEN_CAMERA:
                         mCamera = android.hardware.Camera.open(msg.arg1);
+                        Debug.logd(new Exception(), "mCamera:" + mCamera);
                         if (mCamera != null) {
                             mParametersIsDirty = true;
 
@@ -324,20 +342,6 @@ public class AndroidCameraManagerImpl implements CameraManager {
         }
     }
 
-    @Override
-    public CameraManager.CameraProxy cameraOpen(
-            Handler handler, int cameraId, CameraOpenErrorCallback callback) {
-        mCameraHandler.obtainMessage(OPEN_CAMERA, cameraId, 0,
-                CameraOpenErrorCallbackForward.getNewInstance(
-                        handler, callback)).sendToTarget();
-        mCameraHandler.waitDone();
-        if (mCamera != null) {
-            return new AndroidCameraProxyImpl();
-        } else {
-            return null;
-        }
-    }
-
     /**
      * A class which implements {@link CameraManager.CameraProxy} and
      * camera handler thread.
@@ -366,7 +370,15 @@ public class AndroidCameraManagerImpl implements CameraManager {
         @Override
         public boolean reconnect(Handler handler, CameraOpenErrorCallback cb) {
             mCameraHandler.sendEmptyMessage(RECONNECT);
-            mCameraHandler.waitDone();
+            //mCameraHandler.waitDone();
+
+            mReconnectIOException = null;
+            try {
+                mCamera.reconnect();
+            } catch (IOException ex) {
+                mReconnectIOException = ex;
+            }
+
             CameraOpenErrorCallback cbforward =
                     CameraOpenErrorCallbackForward.getNewInstance(handler, cb);
             if (mReconnectIOException != null) {
