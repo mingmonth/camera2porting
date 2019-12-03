@@ -79,21 +79,6 @@ public class AndroidCameraManagerImpl implements CameraManager {
         mCameraHandler = new CameraHandler(ht.getLooper());
     }
 
-    @Override
-    public CameraManager.CameraProxy cameraOpen(
-            Handler handler, int cameraId, CameraOpenErrorCallback callback) {
-        mCameraHandler.obtainMessage(OPEN_CAMERA, cameraId, 0,
-                CameraOpenErrorCallbackForward.getNewInstance(
-                        handler, callback)).sendToTarget();
-        //mCameraHandler.waitDone();
-        mCamera = android.hardware.Camera.open(cameraId);
-        if (mCamera != null) {
-            return new AndroidCameraProxyImpl();
-        } else {
-            return null;
-        }
-    }
-
     private class CameraHandler extends Handler {
         CameraHandler(Looper looper) {
             super(looper);
@@ -342,6 +327,21 @@ public class AndroidCameraManagerImpl implements CameraManager {
         }
     }
 
+    @Override
+    public CameraManager.CameraProxy cameraOpen(
+            Handler handler, int cameraId, CameraOpenErrorCallback callback) {
+        /*mCameraHandler.obtainMessage(OPEN_CAMERA, cameraId, 0,
+                CameraOpenErrorCallbackForward.getNewInstance(
+                        handler, callback)).sendToTarget();
+        Debug.logd(new Exception(), "waitDone: " + mCameraHandler.waitDone());*/
+        mCamera = android.hardware.Camera.open(cameraId);
+        if (mCamera != null) {
+            return new AndroidCameraProxyImpl();
+        } else {
+            return null;
+        }
+    }
+
     /**
      * A class which implements {@link CameraManager.CameraProxy} and
      * camera handler thread.
@@ -369,16 +369,14 @@ public class AndroidCameraManagerImpl implements CameraManager {
 
         @Override
         public boolean reconnect(Handler handler, CameraOpenErrorCallback cb) {
-            mCameraHandler.sendEmptyMessage(RECONNECT);
-            //mCameraHandler.waitDone();
-
+            /*mCameraHandler.sendEmptyMessage(RECONNECT);
+            mCameraHandler.waitDone();*/
             mReconnectIOException = null;
             try {
                 mCamera.reconnect();
             } catch (IOException ex) {
                 mReconnectIOException = ex;
             }
-
             CameraOpenErrorCallback cbforward =
                     CameraOpenErrorCallbackForward.getNewInstance(handler, cb);
             if (mReconnectIOException != null) {
