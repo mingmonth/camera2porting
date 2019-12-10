@@ -13,13 +13,12 @@ import android.view.ViewGroup;
 
 import java.util.Arrays;
 
-import yskim.sample.camera2porting.CameraActivity;
 import yskim.sample.camera2porting.camera.data.LocalDataAdapter;
 import yskim.sample.camera2porting.camera.util.Debug;
 
 public class FilmStripView extends ViewGroup {
 
-    private CameraActivity mActivity;
+    private Activity mActivity;
     private DataAdapter mDataAdapter;
     private final Rect mDrawArea = new Rect();
 
@@ -91,7 +90,7 @@ public class FilmStripView extends ViewGroup {
 
     public FilmStripView(Context context) {
         super(context);
-        init((CameraActivity) context);
+        init((Activity) context);
     }
 
     /**
@@ -99,7 +98,7 @@ public class FilmStripView extends ViewGroup {
      */
     public FilmStripView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init((CameraActivity) context);
+        init((Activity) context);
     }
 
     /**
@@ -107,12 +106,12 @@ public class FilmStripView extends ViewGroup {
      */
     public FilmStripView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init((CameraActivity) context);
+        init((Activity) context);
     }
 
-    private void init(CameraActivity cameraActivity) {
+    private void init(Activity activity) {
         setWillNotDraw(false);
-        mActivity = cameraActivity;
+        mActivity = activity;
         DisplayMetrics metrics = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
     }

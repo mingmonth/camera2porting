@@ -29,7 +29,7 @@ import yskim.sample.camera2porting.camera.util.Debug;
 
 import static yskim.sample.camera2porting.camera.CameraManager.CameraOpenErrorCallback;
 
-public class CameraActivity extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
+public class CameraActivity2 extends Activity implements View.OnClickListener, ViewGroup.OnTouchListener {
 
     public static final int HIDE_CONTROLS = 1;
     private static final long SHOW_CONTROLS_TIMEOUT_MS = 3000;
@@ -48,17 +48,17 @@ public class CameraActivity extends Activity implements View.OnClickListener, Vi
             new CameraOpenErrorCallback() {
                 @Override
                 public void onCameraDisabled(int cameraId) {
-                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.camera_disabled);
+                    CameraUtil.showErrorAndFinish(CameraActivity2.this, R.string.camera_disabled);
                 }
 
                 @Override
                 public void onDeviceOpenFailure(int cameraId) {
-                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.cannot_connect_camera);
+                    CameraUtil.showErrorAndFinish(CameraActivity2.this, R.string.cannot_connect_camera);
                 }
 
                 @Override
                 public void onReconnectionFailure(CameraManager mgr) {
-                    CameraUtil.showErrorAndFinish(CameraActivity.this, R.string.cannot_connect_camera);
+                    CameraUtil.showErrorAndFinish(CameraActivity2.this, R.string.cannot_connect_camera);
                 }
             };
 
@@ -192,7 +192,7 @@ public class CameraActivity extends Activity implements View.OnClickListener, Vi
         public void handleMessage(Message msg) {
             if (msg.what == HIDE_CONTROLS) {
                 removeMessages(HIDE_CONTROLS);
-                CameraActivity.this.setControlsVisibility(false);
+                CameraActivity2.this.setControlsVisibility(false);
             }
         }
     }

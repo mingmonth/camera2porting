@@ -77,6 +77,7 @@ public class AndroidCameraManagerImpl implements CameraManager {
         HandlerThread ht = new HandlerThread("Camera Handler Thread");
         ht.start();
         mCameraHandler = new CameraHandler(ht.getLooper());
+        Debug.loge(new Exception(), "currentThreadName: " + Thread.currentThread().getName());
     }
 
     private class CameraHandler extends Handler {
@@ -146,6 +147,7 @@ public class AndroidCameraManagerImpl implements CameraManager {
                 @Override
                 public void run() {
                     synchronized (waitDoneLock) {
+                        Debug.logd(new Exception(), "currentThreadName: " + Thread.currentThread().getName());
                         waitDoneLock.notifyAll();
                     }
                 }

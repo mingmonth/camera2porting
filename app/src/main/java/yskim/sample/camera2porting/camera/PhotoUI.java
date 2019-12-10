@@ -1,5 +1,6 @@
 package yskim.sample.camera2porting.camera;
 
+import android.app.Activity;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -10,13 +11,12 @@ import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 
-import yskim.sample.camera2porting.CameraActivity;
 import yskim.sample.camera2porting.R;
 import yskim.sample.camera2porting.camera.util.Debug;
 
 public class PhotoUI implements TextureView.SurfaceTextureListener {
     private static final String TAG = "CAM_UI";
-    private CameraActivity mActivity;
+    private Activity mActivity;
     private PhotoController mController;
 
     private View mRootView;
@@ -46,7 +46,7 @@ public class PhotoUI implements TextureView.SurfaceTextureListener {
         }
     };
 
-    public PhotoUI(CameraActivity activity, PhotoController controller, View parent) {
+    public PhotoUI(Activity activity, PhotoController controller, View parent) {
         mActivity = activity;
         mController = controller;
         mRootView = parent;

@@ -1,5 +1,6 @@
 package yskim.sample.camera2porting.camera;
 
+import android.app.Activity;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.graphics.SurfaceTexture;
@@ -14,7 +15,6 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
 
-import yskim.sample.camera2porting.CameraActivity;
 import yskim.sample.camera2porting.R;
 import yskim.sample.camera2porting.camera.CameraManager.CameraProxy;
 import yskim.sample.camera2porting.camera.util.CameraUtil;
@@ -32,7 +32,8 @@ public class PhotoModule implements CameraModule, PhotoController {
     private static final int CAMERA_DISABLED = 10;
 
     // copied from Camera hierarchy
-    private CameraActivity mActivity;
+    private Activity mActivity;
+    private CameraManager.CameraOpenErrorCallback cb;
     private CameraProxy mCameraDevice;
     private int mCameraId;
     private Parameters mParameters;
@@ -99,8 +100,9 @@ public class PhotoModule implements CameraModule, PhotoController {
     }
 
     @Override
-    public void init(CameraActivity activity, View parent) {
+    public void init(Activity activity, View parent, CameraManager.CameraOpenErrorCallback cb) {
         mActivity = activity;
+        this.cb = cb;
         mUI = new PhotoUI(activity, this, parent);
         mCameraId = 0;
         Debug.logd(new Exception(), "mCameraId : " + mCameraId);
@@ -200,9 +202,7 @@ public class PhotoModule implements CameraModule, PhotoController {
     private boolean prepareCamera() {
         // We need to check whether the activity is paused before long
         // operations to ensure that onPause() can be done ASAP.
-        mCameraDevice = CameraUtil.openCamera(
-                mActivity, mCameraId, mHandler,
-                mActivity.getCameraOpenErrorCallback());
+        mCameraDevice = CameraUtil.openCamera(mActivity, mCameraId, mHandler, cb);
         if (mCameraDevice == null) {
             Log.e(TAG, "Failed to open camera:" + mCameraId);
             return false;
