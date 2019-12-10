@@ -3,45 +3,36 @@ package yskim.sample.camera2porting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import yskim.sample.camera2porting.camera.util.Debug;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Button buttonCam1;
-    Button buttonCam2;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonCam1 = findViewById(R.id.cam1);
-        buttonCam2 = findViewById(R.id.cam2);
-
-        buttonCam1.setOnClickListener(this);
-        buttonCam2.setOnClickListener(this);
-
+        ButterKnife.bind(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
+    @OnClick({R.id.cam1, R.id.cam2})
+    public void onViewClicked(View view) {
+        Intent intent = null;
+        switch (view.getId()) {
             case R.id.cam1:
-                Debug.logd(new Exception(), "");
-                Intent intent = new Intent(this, CameraActivity.class);
-                startActivity(intent);
+                intent = new Intent(this, CameraActivity.class);
                 break;
             case R.id.cam2:
-                Debug.logd(new Exception(), "");
-                Intent intent2 = new Intent(this, CameraActivity2.class);
-                startActivity(intent2);
+                intent = new Intent(this, CameraActivity2.class);
                 break;
-            default:
-                break;
+        }
+
+        if(intent != null) {
+            startActivity(intent);
         }
     }
 }
